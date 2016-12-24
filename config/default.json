@@ -1,0 +1,10 @@
+{
+  "db": {
+    "host": "localhost",
+    "port": 27017,
+    "db": "oscars"
+  },
+  "auth": {
+    "secret": "secret"
+  }
+}
