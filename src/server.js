@@ -2,17 +2,22 @@
 
 const jwt  = require('restify-jwt'),
   mongoose = require('mongoose'),
-  restify  = require('restify');
+  restify  = require('restify'),
+  config   = require('config');
 
 exports.initConnection = function initConnection(server) {
   mongoose.Promise = Promise;
+  let host = config.get('db.host'),
+    port = config.get('db.port'),
+    db = config.get('db.db');
+
   return mongoose
-    .connect('mongodb://localhost:27017/oscars')
+    .connect(`mongodb://${host}:${port}/${db}`)
     .then(() => server);
 };
 
 exports.initLogging = function initLogging(server) {
-  server.log.level('INFO');
+  server.log.level(config.get('log.level'));
   server.startedAt = +(new Date());
 
   return server;

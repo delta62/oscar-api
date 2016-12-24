@@ -8,6 +8,6 @@
     "secret": "secret"
   },
   "log": {
-    "level": "INFO"
+    "level": "FATAL"
   }
 }
