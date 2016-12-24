@@ -7,6 +7,7 @@
   "author": "Sam Noedel <sam.noedel@gmail.com>",
   "license": "GPL-3.0",
   "dependencies": {
+    "jsonwebtoken": "^7.2.1",
     "mongoose": "^4.7.4",
     "restify": "^4.3.0",
     "restify-jwt": "^0.4.0"
