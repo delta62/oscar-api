@@ -3,6 +3,7 @@
 const jwt  = require('restify-jwt'),
   mongoose = require('mongoose'),
   restify  = require('restify'),
+  { reqConnFactory } = require('./middleware/conn'),
   config   = require('config');
 
 exports.initConnection = function initConnection(server) {
@@ -11,9 +12,12 @@ exports.initConnection = function initConnection(server) {
     port = config.get('db.port'),
     db = config.get('db.db');
 
-  return mongoose
-    .connect(`mongodb://${host}:${port}/${db}`)
-    .then(() => server);
+  return new Promise((resolve, reject) => {
+    let conn = mongoose.createConnection(`mongodb://${host}:${port}/${db}`);
+    server.conn = conn;
+    conn.once('connected', () => resolve(server));
+    conn.once('error', err => reject(err));
+  });
 };
 
 exports.initLogging = function initLogging(server) {
@@ -33,6 +37,7 @@ exports.initHandlers = function initHandlers(server) {
 };
 
 exports.initMiddleware = function initMiddleware(server) {
+  server.use(reqConnFactory(server));
   server.use(restify.bodyParser({ mapParams: false }));
   server.use(jwt({ secret: 'secret' }).unless({ path: [
     '/user',
@@ -56,6 +61,18 @@ exports.initEvents = function initEvents(server) {
   server.on('uncaughtException', (req, res, route, err) => {
     server.log.error(err);
     res.send(500, { message: err.message });
+  });
+
+  server.on('Validation', (req, res, err, cb) => {
+    res.send(400, err.errors);
+    return cb();
+  });
+
+  server.on('Mongo', (req, res, err, cb) => {
+    if (err.code === 11000) {
+      res.send(409, err);
+    }
+    cb();
   });
 
   return server;

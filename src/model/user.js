@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-let schema = new mongoose.Schema({
+exports.userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -18,5 +18,3 @@ let schema = new mongoose.Schema({
     unique: true
   }
 });
-
-exports.User = mongoose.model('User', schema);

@@ -1,12 +1,16 @@
 'use strict';
 
-const { User } = require('../../src/model/user'),
+const { userSchema } = require('../../src/model/user'),
+  { modelFactory } = require('../../src/model/model-factory'),
   mongoose     = require('mongoose'),
   { expect }   = require('code');
 
 describe('User model', () => {
+  let User;
+
   before(() => {
     mongoose.Promise = Promise;
+    User = modelFactory(mongoose, userSchema, 'User');
   });
 
   it('should require name', () => {
