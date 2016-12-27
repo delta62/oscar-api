@@ -1,5 +1,3 @@
-'use strict';
-
 const jwt  = require('jsonwebtoken'),
   { UnauthorizedError } = require('restify'),
   { modelFactory } = require('../model/model-factory'),

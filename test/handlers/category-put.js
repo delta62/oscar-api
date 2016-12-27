@@ -1,5 +1,3 @@
-'use strict';
-
 const request = require('supertest'),
   { categorySchema } = require('../../src/model/category'),
   { modelFactory } = require('../../src/model/model-factory'),

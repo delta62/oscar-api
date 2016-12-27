@@ -1,5 +1,3 @@
-'use strict';
-
 const restify = require('restify'),
   serverApi   = require('./server');
 

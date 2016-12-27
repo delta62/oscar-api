@@ -1,5 +1,3 @@
-'use strict';
-
 const api = require('../../src/api'),
   { expect } = require('code'),
   { modelFactory } = require('../../src/model/model-factory'),

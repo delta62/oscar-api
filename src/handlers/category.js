@@ -1,5 +1,3 @@
-'use strict';
-
 const { ForbiddenError, BadRequestError, NotFoundError } = require('restify'),
   { modelFactory } = require('../model/model-factory'),
   { categorySchema } = require('../model/category');

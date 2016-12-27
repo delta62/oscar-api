@@ -1,5 +1,3 @@
-'use strict';
-
 const api          = require('../../src/api'),
   request          = require('supertest'),
   { modelFactory } = require('../../src/model/model-factory'),

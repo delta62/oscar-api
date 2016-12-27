@@ -1,5 +1,3 @@
-'use strict';
-
 const api    = require('../../src/api'),
   request    = require('supertest'),
   { expect } = require('code');

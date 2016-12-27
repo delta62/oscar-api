@@ -1,5 +1,3 @@
-'use strict';
-
 const jwt  = require('restify-jwt'),
   mongoose = require('mongoose'),
   restify  = require('restify'),

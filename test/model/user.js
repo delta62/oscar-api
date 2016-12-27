@@ -1,5 +1,3 @@
-'use strict';
-
 const { userSchema } = require('../../src/model/user'),
   { modelFactory } = require('../../src/model/model-factory'),
   mongoose     = require('mongoose'),

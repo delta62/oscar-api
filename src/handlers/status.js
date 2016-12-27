@@ -1,5 +1,3 @@
-'use strict';
-
 const pkg = require('../../package.json');
 
 exports.get = function statusGetHandlerFactory(server) {
