@@ -1,10 +1,12 @@
 'use strict';
 
-const restify  = require('restify'),
-  { Category } = require('../model/category');
+const { ForbiddenError, BadRequestError, NotFoundError } = require('restify'),
+  { modelFactory } = require('../model/model-factory'),
+  { categorySchema } = require('../model/category');
 
 exports.browse = function categoryBrowseHandler(req, res, next) {
-  Category.find({})
+  let Category = modelFactory(req.conn, categorySchema, 'Category');
+  Category.find({ })
     .then(cats => res.json(cats))
     .then(() => next())
     .catch(err => next(err));
@@ -12,15 +14,20 @@ exports.browse = function categoryBrowseHandler(req, res, next) {
 
 exports.put = function categoryPutHandler(req, res, next) {
   if (!req.user.admin) {
-    throw new restify.UnauthorizedException();
+    return next(new ForbiddenError());
   }
 
-  Category.findOne({ name: req.body.name })
+  let Category = modelFactory(req.conn, categorySchema, 'Category');
+  let reqCat = new Category(req.body);
+  reqCat.validate()
+    .then(() => Category.findOne({ name: reqCat.name }))
     .then(cat => {
-      if (!cat) throw new restify.NotFoundError();
-      cat.set('closed', req.body.closed ? new Date() : null);
-      return cat.save();
+      if (!cat) throw new NotFoundError();
+      return cat;
     })
+    .then(cat => cat.set(reqCat.toJSON()))
+    .then(cat => cat.save())
+    .then(() => res.send(200))
     .then(() => next())
     .catch(err => next(err));
 };

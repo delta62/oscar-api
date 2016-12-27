@@ -30,6 +30,7 @@ exports.initLogging = function initLogging(server) {
 exports.initHandlers = function initHandlers(server) {
   server.get('/status',   require('./handlers/status').get(server));
   server.get('/category', require('./handlers/category').browse);
+  server.put('/category', require('./handlers/category').put);
   server.post('/user',    require('./handlers/user').post);
   server.post('/login',   require('./handlers/login').post);
 
@@ -50,7 +51,7 @@ exports.initMiddleware = function initMiddleware(server) {
 
 exports.initEvents = function initEvents(server) {
   server.on('after', (req, res, route, err) => {
-    server.log.info({
+    server.log.info('after', {
       status: res.statusCode,
       method: req.method,
       path: req.path(),

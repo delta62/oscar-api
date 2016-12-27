@@ -3,8 +3,14 @@
 const mongoose = require('mongoose');
 
 let schema = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    required: true,
+    index: true,
+    unique: true
+  },
   options: [ String ],
+  answer: String,
   closed: Date
 });
 
