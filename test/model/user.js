@@ -13,51 +13,70 @@ describe('User model', () => {
     User = modelFactory(mongoose, userSchema, 'User');
   });
 
-  it('should require name', () => {
-    return new User({ }).validate(err => {
-      expect(err.errors.name).to.exist();
-    });
+  it('should require name', done => {
+    new User({ })
+      .validate()
+      .catch(err => {
+        expect(err.errors.name).to.exist();
+        done();
+      });
   });
 
-  it('should not allow names < 3 characters', () => {
-    return new User({ name: 'ab' }).validate(err => {
-      expect(err.errors.name).to.exist();
-    });
+  it('should not allow names < 3 characters', done => {
+    new User({ name: 'ab' })
+      .validate()
+      .catch(err => {
+        expect(err.errors.name).to.exist();
+        done();
+      });
   });
 
-  it('should accept a valid name', () => {
-    return new User({ name: 'cheese' }).validate(err => {
-      expect(err.errors.name).not.to.exist();
-    });
+  it('should accept a valid name', done => {
+    new User({ name: 'cheese' })
+      .validate()
+      .catch(err => {
+        expect(err.errors.name).not.to.exist();
+        done();
+      });
   });
 
-  it('should require username', () => {
-    return new User({ }).validate(err => {
-      expect(err.errors.username).to.exist();
-    });
+  it('should require username', done => {
+    new User({ })
+      .validate()
+      .catch(err => {
+        expect(err.errors.username).to.exist();
+        done();
+      });
   });
 
-  it('should not allow usernames < 3 characters', () => {
-    return new User({ username: '12' }).validate(err => {
-      expect(err.errors.username).to.exist();
-    });
+  it('should not allow usernames < 3 characters', done => {
+    new User({ username: '12' })
+      .validate()
+      .catch(err => {
+        expect(err.errors.username).to.exist();
+        done();
+      });
   });
 
-  it('should restrict username characters', () => {
-    return new User({ username: '!@#$%^&*()-_=+' }).validate(err => {
-      expect(err.errors.username).to.exist();
-    });
+  it('should restrict username characters', done => {
+    new User({ username: '!@#$%^&*()-_=+' })
+      .validate()
+      .catch(err => {
+        expect(err.errors.username).to.exist();
+        done();
+      });
   });
 
-  it('should accept a valid username', () => {
-    return new User({ username: 'mister_cheese' }).validate(err => {
-      expect(err.errors.username).not.to.exist();
-    });
+  it('should accept a valid username', done => {
+    new User({ username: 'mister_cheese' })
+      .validate()
+      .catch(err => {
+        expect(err.errors.username).not.to.exist();
+        done();
+      });
   });
 
   it('should pass validation with valid data', () => {
-    return new User({ name: 'foo', username: 'bar' }).validate(err => {
-      expect(err.errors).to.equal([ ]);
-    });
+    return new User({ name: 'foo', username: 'bar' }).validate();
   });
 });
