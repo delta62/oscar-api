@@ -16,7 +16,7 @@ describe('PUT /category', () => {
       .do(api => {
         let Category = modelFactory(api.conn, categorySchema, 'Category');
         return Category.remove({ })
-          .then(() => Category.create({ name: 'c1', }));
+          .then(() => Category.create({ name: 'c1', options: [ 'a' ] }));
       })
       .then(api => agent = request(api));
   })
@@ -46,7 +46,7 @@ describe('PUT /category', () => {
     let token = jwt.sign({ admin: true }, 'secret');
     agent
       .put('/category')
-      .send({ name: 'foobar' })
+      .send({ name: 'foobar', options: [ 'a' ] })
       .set('Authorization', `Bearer ${token}`)
       .expect(404, done);
   });
@@ -55,7 +55,7 @@ describe('PUT /category', () => {
     let token = jwt.sign({ admin: true }, 'secret');
     agent
       .put('/category')
-      .send({ name: 'c1' })
+      .send({ name: 'c1', options: [ 'a' ] })
       .set('Authorization', `Bearer ${token}`)
       .expect(200, done);
   });
