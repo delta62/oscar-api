@@ -9,7 +9,10 @@ let schema = new mongoose.Schema({
     index: true,
     unique: true
   },
-  options: [ String ],
+  options: {
+    type: [ String ],
+    required: true
+  },
   answer: String,
   closed: Date
 });
