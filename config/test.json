@@ -5,7 +5,8 @@
     "db": "oscars"
   },
   "auth": {
-    "secret": "secret"
+    "secret": "secret",
+    "admins": [ ]
   },
   "log": {
     "level": "FATAL"

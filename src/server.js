@@ -26,11 +26,12 @@ exports.initLogging = function initLogging(server) {
 };
 
 exports.initHandlers = function initHandlers(server) {
-  server.get('/status',   require('./handlers/status').get(server));
-  server.get('/category', require('./handlers/category').browse);
-  server.put('/category', require('./handlers/category').put);
-  server.post('/user',    require('./handlers/user').post);
-  server.post('/login',   require('./handlers/login').post);
+  server.get('/status',    require('./handlers/status').get(server));
+  server.get('/category',  require('./handlers/category').browse);
+  server.put('/category',  require('./handlers/category').put);
+  server.post('/category', require('./handlers/category').post);
+  server.post('/user',     require('./handlers/user').post);
+  server.post('/login',    require('./handlers/login').post);
 
   return server;
 };

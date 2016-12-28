@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'),
+  { modelFactory } = require('./model-factory');
 
 let schema = new mongoose.Schema({
   name: {
@@ -16,3 +17,7 @@ let schema = new mongoose.Schema({
 });
 
 exports.Category = mongoose.model('Category', schema);
+
+exports.categoryModelFactory = function categoryModelFactory(db) {
+  return modelFactory(db, schema, 'Category');
+};
