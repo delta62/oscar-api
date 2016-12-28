@@ -14,20 +14,6 @@ exports.browse = function categoryBrowseHandler(req, res, next) {
     .catch(err => next(err));
 };
 
-exports.post = function categoryPostHandler(req, res, next) {
-  if (!req.user.admin) {
-    return next(new ForbiddenError());
-  }
-
-  if (req.body && req.body._id) delete req.body._id;
-
-  let Category = categoryModelFactory(req.conn);
-  Category.create(req.body)
-    .then(() => res.send(201))
-    .then(() => next())
-    .catch(err => next(err));
-}
-
 exports.patch = function categoryPatchHandler(req, res, next) {
   if (!req.user.admin) {
     return next(new ForbiddenError());
