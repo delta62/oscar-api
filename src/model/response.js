@@ -2,16 +2,22 @@ const mongoose = require('mongoose'),
   { modelFactory } = require('./model-factory');
 
 exports.responseSchema = new mongoose.Schema({
-  choice: {
+  username: {
     type: String,
     required: true
   },
-  responseTime: {
-    type: Date,
+  category: {
+    type: String,
+    required: true
+  },
+  value: {
+    type: String,
     required: true
   }
+}, {
+  timestamps: true
 });
 
 exports.responseModelFactory = function responseModelFactory(db) {
-  return modelFactory(db, exports.responseModelSchema, 'Response');
-}
+  return modelFactory(db, exports.responseSchema, 'Response');
+};

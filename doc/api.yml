@@ -36,41 +36,14 @@ paths:
           description: No/invalid auth token was provided
           schema:
             $ref: '#/definitions/Error'
-    post:
-      summary: Create a new category
-      description: Creates a new Oscar category that users can vote on
-      parameters:
-      - name: body
-        in: body
-        required: true
-        schema:
-          $ref: '#/definitions/Category'
-      tags:
-      - Admin
-      - Category
-      responses:
-        201:
-          description: Category created
-        401:
-          description: No/invalid auth token was provided
-          schema:
-            $ref: '#/definitions/Error'
-        403:
-          description: The given auth token is not an admin
-          schema:
-            $ref: '#/definitions/Error'
-        409:
-          description: A category with the given name already exists
-          schema:
-            $ref: '#/definitions/Error'
-  /category/{id}:
+  /category/{categoryId}:
     patch:
       summary: Updates an Oscar category
       description: |
         This endpoint is used by admins to modify the state of an oscar category,
         including closing the category and setting the correct answer.
       parameters:
-      - name: id
+      - name: categoryId
         in: path
         required: true
         description: The ID of the category to update
@@ -101,19 +74,12 @@ paths:
           description: A category with the given ID does not exist
           schema:
             $ref: '#/definitions/Error'
-  /response/{user}:
+  /response:
     get:
       summary: User responses
-      description: Retrieve all responses that a given user has submitted
+      description: Retrieve all responses that the current user has submitted
       tags:
       - Response
-      - User
-      parameters:
-      - name: user
-        in: path
-        required: true
-        type: string
-        description: The username of the user to fetch responses for
       responses:
         200:
           description: Get all of a user's responses
@@ -121,6 +87,37 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Response'
+        401:
+          description: No/invalid auth token was provided
+          schema:
+            $ref: '#/definitions/Error'
+  /response/{categoryId}:
+    put:
+      summary: Create a response
+      description: Record a guess for a particular Oscar category
+      tags:
+      - Response
+      parameters:
+      - name: categoryId
+        in: path
+        required: true
+        type: string
+      - name: value
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            value:
+              type: string
+              description: The option which the user has guessed
+      responses:
+        201:
+          description: Response logged
+        400:
+          description: Invalid option given
+          schema:
+            $ref: '#/definitions/Error'
         401:
           description: No/invalid auth token was provided
           schema:
@@ -205,7 +202,7 @@ definitions:
   Category:
     type: object
     properties:
-      _id:
+      id:
         type: string
         description: Unique ID of this category
       name:
@@ -242,19 +239,12 @@ definitions:
   Response:
     type: object
     properties:
-      username:
+      category:
         type: string
-        description: The username who cast this response
+        description: The name of the category this response is for
       value:
         type: string
         description: The guess that the user submitted
-      time:
-        type: string
-        description: |
-          The ISO 8601 timestamp (in UTC) when the response was last modified
-      score:
-        type: number
-        description: The number of points awarded for this response
   Score:
     type: object
     properties:
