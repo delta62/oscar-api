@@ -24,7 +24,7 @@ paths:
       description: |
         Returns all of the Oscar categories that users can vote on.
       tags:
-      - Auth Required
+      - Category
       responses:
         200:
           description: An array of categories
@@ -47,6 +47,7 @@ paths:
           $ref: '#/definitions/Category'
       tags:
       - Admin
+      - Category
       responses:
         201:
           description: Category created
@@ -63,7 +64,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
   /category/{id}:
-    put:
+    patch:
       summary: Updates an Oscar category
       description: |
         This endpoint is used by admins to modify the state of an oscar category,
@@ -79,12 +80,23 @@ paths:
         required: true
         description: The updated category
         schema:
-          $ref: '#/definitions/Category'
+          $ref: '#/definitions/CategoryPatch'
       tags:
       - Admin
+      - Category
       responses:
         200:
           description: The category was successfully updated
+          schema:
+            $ref: '#/definitions/Category'
+        401:
+          description: No/invalid auth token was provided
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: The given auth token is not an admin
+          schema:
+            $ref: '#/definitions/Error'
         404:
           description: A category with the given ID does not exist
           schema:
@@ -94,7 +106,8 @@ paths:
       summary: User responses
       description: Retrieve all responses that a given user has submitted
       tags:
-      - Auth Required
+      - Response
+      - User
       parameters:
       - name: user
         in: path
@@ -116,6 +129,8 @@ paths:
     post:
       summary: Log a user in
       description: Returns an auth token given a valid username
+      tags:
+      - User
       parameters:
       - name: body
         in: body
@@ -132,7 +147,7 @@ paths:
       summary: Current user
       description: Returns data about the currently logged in user
       tags:
-      - Auth Required
+      - User
       responses:
         200:
           description: The current user
@@ -145,6 +160,8 @@ paths:
     post:
       summary: Create a new user
       description: Creates a new user account, where the username is used as the password
+      tags:
+      - User
       parameters:
       - name: body
         in: body
@@ -154,9 +171,30 @@ paths:
           $ref: '#/definitions/User'
       responses:
         201:
-          description: Create a new user
+          description: The newly created user
+          schema:
+            $ref: '#/definitions/User'
         409:
           description: A user with the given username already exists
+          schema:
+            $ref: '#/definitions/Error'
+  /score:
+    get:
+      summary: Get all players' current scores
+      description: |
+        This endpoint provides a summary description of all players' current scores.
+      tags:
+      - Score
+      - User
+      responses:
+        200:
+          description: The current scorecard
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Score'
+        401:
+          description: No/invalid auth token was provided
           schema:
             $ref: '#/definitions/Error'
 definitions:
@@ -171,7 +209,7 @@ definitions:
     properties:
       _id:
         type: string
-        description: Unique ID of the category
+        description: Unique ID of this category
       name:
         type: string
         description: The name of the Oscar category
@@ -187,12 +225,19 @@ definitions:
       answer:
         type: string
         description: The correct answer to the category
+  CategoryPatch:
+    type: object
+    properties:
+      closed:
+        type: string
+        description: |
+          ISO 8601 date in UTC time at which the category was closed
+      answer:
+        type: string
+        description: The correct answer to the category
   Response:
     type: object
     properties:
-      _id:
-        type: string
-        description: Unique ID of the response
       username:
         type: string
         description: The username who cast this response
@@ -203,6 +248,18 @@ definitions:
         type: string
         description: |
           The ISO 8601 timestamp (in UTC) when the response was last modified
+      score:
+        type: number
+        description: The number of points awarded for this response
+  Score:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Display name of the user
+      score:
+        type: number
+        description: The score for the user
   Status:
     type: object
     properties:
@@ -215,9 +272,6 @@ definitions:
   User:
     type: object
     properties:
-      _id:
-        type: string
-        description: Unique ID of the user
       name:
         type: string
         description: Human-readable name of the user
