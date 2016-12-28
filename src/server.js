@@ -30,6 +30,7 @@ exports.initHandlers = function initHandlers(server) {
   server.get('/category',       require('./handlers/category').browse);
   server.patch('/category/:id', require('./handlers/category').patch);
   server.post('/category',      require('./handlers/category').post);
+  server.get('/user',           require('./handlers/user').get);
   server.post('/user',          require('./handlers/user').post);
   server.post('/login',         require('./handlers/login').post);
 
@@ -40,7 +41,7 @@ exports.initMiddleware = function initMiddleware(server) {
   server.use(reqConnFactory(server));
   server.use(restify.bodyParser({ mapParams: false }));
   server.use(jwt({ secret: 'secret' }).unless({ path: [
-    '/user',
+    { url: '/user', methods: [ 'POST' ] },
     '/status',
     '/login'
   ]}));

@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'),
+  { modelFactory } = require('./model-factory');
 
 exports.userSchema = new mongoose.Schema({
   name: {
@@ -16,3 +17,7 @@ exports.userSchema = new mongoose.Schema({
     unique: true
   }
 });
+
+exports.userModelFactory = function userModelFactory(db) {
+  return modelFactory(db, exports.userSchema, 'User');
+};

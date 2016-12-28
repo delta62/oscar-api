@@ -27,7 +27,7 @@ function ensureUser(user) {
 function signToken(user) {
   let body = {
     admin: false,
-    name: user.name
+    username: user.username
   };
 
   return new Promise((resolve, reject) => {
