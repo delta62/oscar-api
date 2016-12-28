@@ -1,14 +1,13 @@
-const { modelFactory } = require('../model/model-factory'),
+const { categoryModelFactory } = require('../model/category'),
   {
     ForbiddenError,
     BadRequestError,
     NotFoundError,
     ConflictError
-  } = require('restify'),
-  { categorySchema, categoryModelFactory } = require('../model/category');
+  } = require('restify');
 
 exports.browse = function categoryBrowseHandler(req, res, next) {
-  let Category = modelFactory(req.conn, categorySchema, 'Category');
+  let Category = categoryModelFactory(req.conn);
   Category.find({ })
     .then(cats => res.json(cats))
     .then(() => next())
@@ -29,22 +28,24 @@ exports.post = function categoryPostHandler(req, res, next) {
     .catch(err => next(err));
 }
 
-exports.put = function categoryPutHandler(req, res, next) {
+exports.patch = function categoryPatchHandler(req, res, next) {
   if (!req.user.admin) {
     return next(new ForbiddenError());
   }
 
-  let Category = modelFactory(req.conn, categorySchema, 'Category');
-  let reqCat = new Category(req.body);
-  reqCat.validate()
-    .then(() => Category.findOne({ name: reqCat.name }))
+  let Category = categoryModelFactory(req.conn);
+  let update = {
+    answer: req.body.answer,
+    closed: req.body.closed
+  };
+
+  Category.findByIdAndUpdate(req.params.id, update, { new: true })
     .then(cat => {
       if (!cat) throw new NotFoundError();
       return cat;
     })
-    .then(cat => cat.set(reqCat.toJSON()))
     .then(cat => cat.save())
-    .then(() => res.send(200))
+    .then(cat => res.json(cat))
     .then(() => next())
     .catch(err => next(err));
 };

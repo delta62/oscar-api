@@ -1,50 +1,49 @@
 const request = require('supertest'),
-  { categorySchema } = require('../../src/model/category'),
-  { modelFactory } = require('../../src/model/model-factory'),
+  { categoryModelFactory } = require('../../src/model/category'),
   jwt = require('jsonwebtoken'),
   api = require('../../src/api');
 
 require('promise-do');
 
-describe('PUT /category', () => {
-  let agent;
+describe('PATCH /category/:id', () => {
+  let agent,
+    token = jwt.sign({ admin: true }, 'secret'),
+    id,
+    Category;
 
   before(() => {
     return api.boot()
-      .do(api => {
-        let Category = modelFactory(api.conn, categorySchema, 'Category');
-        return Category.remove({ })
-          .then(() => Category.create({ name: 'c1', options: [ 'a' ] }));
-      })
+      .do(api => Category = categoryModelFactory(api.conn))
+      .do(() => Category.remove({ }))
+      .do(() => Category.create({ name: 'c1', options: [ 'a' ] }))
+      .do(() => Category.findOne({ name: 'c1' }).then(doc => id = doc.id))
       .then(api => agent = request(api));
   })
 
   it('should return 401 when not authenticated', done => {
-    agent.put('/category').expect(401, done);
+    agent.patch(`/category/${id}`).expect(401, done);
   });
 
   it('should return 400 when the request is bad', done => {
-    let token = jwt.sign({ admin: true }, 'secret');
     agent
-      .put('/category')
-      .send([ 1, 2, 3 ])
+      .patch(`/category/${id}`)
+      .send({ closed: 'cheesy nachos' })
       .set('Authorization', `Bearer ${token}`)
       .expect(400, done);
   })
 
   it('should return 403 when not an admin', done => {
-    let token = jwt.sign({ admin: false }, 'secret');
+    let nonAdminToken = jwt.sign({ admin: false }, 'secret');
     agent
-      .put('/category')
-      .set('Authorization', `Bearer ${token}`)
+      .patch(`/category/${id}`)
+      .set('Authorization', `Bearer ${nonAdminToken}`)
       .expect(403, done);
   });
 
   it('should return 404 when updating an unknown category', done => {
-    let token = jwt.sign({ admin: true }, 'secret');
     agent
-      .put('/category')
-      .send({ name: 'foobar', options: [ 'a' ] })
+      .patch(`/category/58640422292044a2ef71aa0c`)
+      .send({ answer: 'a' })
       .set('Authorization', `Bearer ${token}`)
       .expect(404, done);
   });
@@ -52,7 +51,7 @@ describe('PUT /category', () => {
   it('should return 200 on success', done => {
     let token = jwt.sign({ admin: true }, 'secret');
     agent
-      .put('/category')
+      .patch(`/category/${id}`)
       .send({ name: 'c1', options: [ 'a' ] })
       .set('Authorization', `Bearer ${token}`)
       .expect(200, done);

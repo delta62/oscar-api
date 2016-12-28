@@ -26,12 +26,12 @@ exports.initLogging = function initLogging(server) {
 };
 
 exports.initHandlers = function initHandlers(server) {
-  server.get('/status',    require('./handlers/status').get(server));
-  server.get('/category',  require('./handlers/category').browse);
-  server.put('/category',  require('./handlers/category').put);
-  server.post('/category', require('./handlers/category').post);
-  server.post('/user',     require('./handlers/user').post);
-  server.post('/login',    require('./handlers/login').post);
+  server.get('/status',         require('./handlers/status').get(server));
+  server.get('/category',       require('./handlers/category').browse);
+  server.patch('/category/:id', require('./handlers/category').patch);
+  server.post('/category',      require('./handlers/category').post);
+  server.post('/user',          require('./handlers/user').post);
+  server.post('/login',         require('./handlers/login').post);
 
   return server;
 };
@@ -62,6 +62,11 @@ exports.initEvents = function initEvents(server) {
     server.log.error(err);
     res.send(500, { message: err.message });
   });
+
+  server.on('Cast', (req, res, err, cb) => {
+    res.send(400, err.errors);
+    return cb();
+  })
 
   server.on('Validation', (req, res, err, cb) => {
     res.send(400, err.errors);
