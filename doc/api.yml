@@ -136,7 +136,7 @@ paths:
         in: body
         required: true
         schema:
-          $ref: '#/definitions/User'
+          $ref: '#/definitions/Login'
       responses:
         200:
           description: Get an auth token
@@ -172,8 +172,6 @@ paths:
       responses:
         201:
           description: The newly created user
-          schema:
-            $ref: '#/definitions/User'
         409:
           description: A user with the given username already exists
           schema:
@@ -235,6 +233,12 @@ definitions:
       answer:
         type: string
         description: The correct answer to the category
+  Login:
+    type: object
+    properties:
+      username:
+        type: string
+        description: The username to log in as
   Response:
     type: object
     properties:
