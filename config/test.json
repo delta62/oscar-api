@@ -2,7 +2,7 @@
   "db": {
     "host": "localhost",
     "port": 27017,
-    "db": "oscars"
+    "db": "oscars-test"
   },
   "auth": {
     "secret": "testsecret",

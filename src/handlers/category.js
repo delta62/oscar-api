@@ -4,9 +4,9 @@ const { ForbiddenError, NotFoundError } = require('restify');
 exports.browse = function categoryBrowseHandler(req, res, next) {
   let Category = categoryModelFactory(req.conn);
   Category.find({ })
-    .then(cats => res.json(cats))
-    .then(() => next())
-    .catch(err => next(err));
+    .then(res.json.bind(res))
+    .then(next)
+    .catch(next);
 };
 
 exports.patch = function categoryPatchHandler(req, res, next) {
@@ -26,7 +26,7 @@ exports.patch = function categoryPatchHandler(req, res, next) {
       return cat;
     })
     .then(cat => cat.save())
-    .then(cat => res.json(cat))
-    .then(() => next())
-    .catch(err => next(err));
+    .then(res.json.bind(res))
+    .then(next)
+    .catch(next);
 };
