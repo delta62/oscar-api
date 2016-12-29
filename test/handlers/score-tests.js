@@ -22,14 +22,16 @@ describe('GET /score', () => {
       .do(() => Category.create({ name: 'c1', options: [ 'a' ], answer: 'a' }))
       .do(() => Category.create({ name: 'c2', options: [ 'a' ], answer: 'a' }))
       .do(() => Response.remove({ }))
-      .do(() => Response.create({ username: 'user1', category: 'c1', value: 'a' }))
-      .do(() => Response.create({ username: 'user1', category: 'c2', value: 'a' }))
-      .do(() => Response.create({ username: 'user2', category: 'c1', value: 'b' }))
-      .do(() => Response.create({ username: 'user2', category: 'c2', value: 'b' }))
-      .do(() => Response.create({ username: 'user3', category: 'c1', value: 'a' }))
-      .do(() => Response.create({ username: 'user4', category: 'c1', value: 'b' }))
-      .do(() => Response.create({ username: 'user5', category: 'c1', value: 'a' }))
-      .do(() => Response.create({ username: 'user5', category: 'c2', value: 'b' }))
+      .do(() => Response.create([
+        { username: 'user1', category: 'c1', value: 'a' },
+        { username: 'user1', category: 'c2', value: 'a' },
+        { username: 'user2', category: 'c1', value: 'b' },
+        { username: 'user2', category: 'c2', value: 'b' },
+        { username: 'user3', category: 'c1', value: 'a' },
+        { username: 'user4', category: 'c1', value: 'b' },
+        { username: 'user5', category: 'c1', value: 'a' },
+        { username: 'user5', category: 'c2', value: 'b' }
+      ]))
       .do(() => User.remove({ }))
       .do(() => User.create({ name: 'User 1', username: 'user1' }))
       .do(() => User.create({ name: 'User 2', username: 'user2' }))

@@ -12,7 +12,10 @@ exports.browse = function responseBrowseHandler(req, res, next) {
 };
 
 exports.put = function responsePutHandler(req, res, next) {
-  let Category = categoryModelFactory(req.conn);
+  let Category = categoryModelFactory(req.conn),
+    username = req.user.username,
+    conn = req.conn,
+    value = req.body.value;
 
   Category.findById(req.params.id)
     .then(cat => {
@@ -24,7 +27,7 @@ exports.put = function responsePutHandler(req, res, next) {
         throw new BadRequestError();
       }
     })
-    .then(cat => upsertResponse(req.conn, req.user.username, cat.name, req.body.value))
+    .then(cat => upsertResponse(conn, username, cat.name, value))
     .then(() => res.send(201))
     .then(next)
     .catch(next);

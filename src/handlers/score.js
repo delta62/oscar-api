@@ -31,8 +31,8 @@ function calculateUserScore(username, categories, responses) {
       return acc;
     }
 
-    let correctAnswer = categories.find(cat => cat.name === res.category).answer;
-    let questionScore = res.value === correctAnswer
+    let category = categories.find(cat => cat.name === res.category);
+    let questionScore = res.value === category.answer
       ? config.get('score.correct')
       : config.get('score.incorrect');
     return acc + questionScore;
