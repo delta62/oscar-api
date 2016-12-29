@@ -1,8 +1,8 @@
 const config = require('config');
 const jwt = require('restify-jwt');
-const mongoose = require('mongoose');
 const restify = require('restify');
 const { reqConnFactory } = require('./middleware/conn');
+const { dbConnectionFactory } = require('./connection-factory');
 const {
   onMongo,
   onBadRequest,
@@ -11,17 +11,9 @@ const {
 } = require('./events');
 
 exports.initConnection = function initConnection(server) {
-  mongoose.Promise = Promise;
-  let host = config.get('db.host'),
-    port = config.get('db.port'),
-    db = config.get('db.db');
-
-  return new Promise((resolve, reject) => {
-    let conn = mongoose.createConnection(`mongodb://${host}:${port}/${db}`);
-    server.conn = conn;
-    conn.once('connected', () => resolve(server));
-    conn.once('error', err => reject(err));
-  });
+  return dbConnectionFactory()
+    .then(conn => server.conn = conn)
+    .then(() => server);
 };
 
 exports.initLogging = function initLogging(server) {
