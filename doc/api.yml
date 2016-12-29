@@ -122,6 +122,10 @@ paths:
           description: No/invalid auth token was provided
           schema:
             $ref: '#/definitions/Error'
+        404:
+          description: The category does not exist
+          schema:
+            $ref: '#/definitions/Error'
   /login:
     post:
       summary: Log a user in
