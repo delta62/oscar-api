@@ -1,4 +1,4 @@
-const api = require('../../src/api');
+const { boot } = require('../../src/api');
 const { err } = require('../helpers/error');
 const { userModelFactory } = require('../../src/model/user');
 const { expect } = require('code');
@@ -12,7 +12,7 @@ describe('GET /user', () => {
 
   before(() => {
     let User;
-    return api.boot()
+    return boot()
       .do(api => User = userModelFactory(api.conn))
       .do(() => User.remove({ }))
       .do(() => User.create({ username: 'user1', name: 'User One' }))

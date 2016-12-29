@@ -1,4 +1,4 @@
-const api                      = require('../../src/api');
+const { boot }                 = require('../../src/api');
 const { err }                  = require('../helpers/error');
 const request                  = require('supertest');
 const { modelFactory }         = require('../../src/model/model-factory');
@@ -9,7 +9,7 @@ describe('POST /users', () => {
   let agent;
 
   before(() => {
-    return api.boot()
+    return boot()
       .then(api => {
         let User = modelFactory(api.conn, userSchema, 'User');
         return User.remove({ }).then(() => api);

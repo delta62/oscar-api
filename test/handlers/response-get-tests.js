@@ -1,6 +1,6 @@
 const request = require('supertest');
 const { err } = require('../helpers/error');
-const api = require('../../src/api');
+const { boot } = require('../../src/api');
 const { expect } = require('code');
 const jwt = require('jsonwebtoken');
 const { responseModelFactory } = require('../../src/model/response');
@@ -12,7 +12,7 @@ describe('GET /response', () => {
 
   before(() => {
     let Response;
-    return api.boot()
+    return boot()
       .do(api => Response = responseModelFactory(api.conn))
       .do(() => Response.remove({ }))
       .do(() => Response.create({ username: 'u', category: 'c', value: 'a' }))

@@ -1,10 +1,9 @@
 const request = require('supertest');
-const api = require('../../src/api');
+const { boot } = require('../../src/api');
 const jwt = require('jsonwebtoken');
 const { err } = require('../helpers/error.js');
 const { expect } = require('code');
-const { modelFactory } = require('../../src/model/model-factory');
-const { categorySchema } = require('../../src/model/category');
+const { categoryModelFactory } = require('../../src/model/category');
 const { describe, before, it } = require('mocha');
 
 describe('GET /category', () => {
@@ -13,18 +12,17 @@ describe('GET /category', () => {
     token = jwt.sign({ admin: false }, 'secret');
 
   before(() => {
-    return api.boot()
-      .do(api=> {
-        let Category = modelFactory(api.conn, categorySchema, 'Category');
-        return Category.remove({ })
-          .then(Category.create({
-            name: 'c1',
-            options: [ 'a', 'b', 'c' ],
-            closed,
-            answer: 'a'
-          }))
-          .then(Category.create({ name: 'c2', options: [ 'a' ] }));
-      })
+    let Category;
+    return boot()
+      .do(api=> Category = categoryModelFactory(api.conn))
+      .do(() => Category.remove({ }))
+      .do(() => Category.create({
+        name: 'c1',
+        options: [ 'a', 'b', 'c' ],
+        closed,
+        answer: 'a'
+      }))
+      .do(() => Category.create({ name: 'c2', options: [ 'a' ] }))
       .then(api => agent = request(api));
   });
 

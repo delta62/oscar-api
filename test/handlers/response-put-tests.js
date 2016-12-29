@@ -1,5 +1,5 @@
 const request = require('supertest');
-const api = require('../../src/api');
+const { boot } = require('../../src/api');
 const jwt = require('jsonwebtoken');
 const { err } = require('../helpers/error');
 const { expect } = require('code');
@@ -16,7 +16,7 @@ describe('PUT /response/:categoryId', () => {
   before(() => {
     let Category;
 
-    return api.boot()
+    return boot()
       .do(api => Response = responseModelFactory(api.conn))
       .do(api => Category = categoryModelFactory(api.conn))
       .do(() => Response.remove({ }))

@@ -1,4 +1,4 @@
-const api = require('../../src/api');
+const { boot } = require('../../src/api');
 const request = require('supertest');
 const { expect } = require('code');
 const { describe, before, it } = require('mocha');
@@ -7,7 +7,7 @@ describe('GET /status', () => {
   let agent;
 
   before(() => {
-    return api.boot().then(api => agent = request(api));
+    return boot().then(api => agent = request(api));
   });
 
   it('should respond with JSON', done => {

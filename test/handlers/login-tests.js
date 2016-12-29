@@ -1,4 +1,4 @@
-const api = require('../../src/api');
+const { boot } = require('../../src/api');
 const { err } = require('../helpers/error');
 const jwt = require('jsonwebtoken');
 const { expect } = require('code');
@@ -12,8 +12,7 @@ describe('POST /login', () => {
 
   before(() => {
     let User;
-
-    return api.boot()
+    return boot()
       .do(api => User = modelFactory(api.conn, userSchema, 'User'))
       .do(() => User.remove({ }))
       .do(() => User.create({ name: 'user', username: 'user1' }))

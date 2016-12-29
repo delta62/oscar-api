@@ -1,8 +1,8 @@
-const jwt  = require('restify-jwt');
+const jwt = require('restify-jwt');
 const mongoose = require('mongoose');
-const restify  = require('restify');
+const restify = require('restify');
 const { reqConnFactory } = require('./middleware/conn');
-const config   = require('config');
+const config = require('config');
 
 exports.initConnection = function initConnection(server) {
   mongoose.Promise = Promise;

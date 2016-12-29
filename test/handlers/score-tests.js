@@ -5,7 +5,7 @@ const { responseModelFactory } = require('../../src/model/response');
 const { userModelFactory } = require('../../src/model/user');
 const { expect } = require('code');
 const jwt = require('jsonwebtoken');
-const api = require('../../src/api');
+const { boot } = require('../../src/api');
 const { describe, before, it } = require('mocha');
 
 describe('GET /score', () => {
@@ -14,7 +14,7 @@ describe('GET /score', () => {
 
   before(() => {
     let Category, Response, User;
-    return api.boot()
+    return boot()
       .do(api => Category = categoryModelFactory(api.conn))
       .do(api => Response = responseModelFactory(api.conn))
       .do(api => User = userModelFactory(api.conn))

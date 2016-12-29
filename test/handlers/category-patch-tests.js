@@ -2,7 +2,7 @@ const request = require('supertest');
 const { categoryModelFactory } = require('../../src/model/category');
 const { err } = require('../helpers/error');
 const jwt = require('jsonwebtoken');
-const api = require('../../src/api');
+const { boot } = require('../../src/api');
 const { describe, before, it } = require('mocha');
 
 require('promise-do');
@@ -14,7 +14,7 @@ describe('PATCH /category/:id', () => {
     Category;
 
   before(() => {
-    return api.boot()
+    return boot()
       .do(api => Category = categoryModelFactory(api.conn))
       .do(() => Category.remove({ }))
       .do(() => Category.create({ name: 'c1', options: [ 'a' ] }))
