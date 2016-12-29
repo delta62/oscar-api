@@ -1,0 +1,4 @@
+config/
+doc/
+node_modules/
+test/
