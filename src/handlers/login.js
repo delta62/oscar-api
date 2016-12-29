@@ -13,8 +13,8 @@ exports.post = function loginHandler(req, res, next) {
     .then(ensureUser)
     .then(signToken)
     .then(token => res.json({ token }))
-    .then(() => next())
-    .catch(err => next(err));
+    .then(next)
+    .catch(next);
 };
 
 function ensureUser(user) {

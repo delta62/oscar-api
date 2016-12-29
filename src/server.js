@@ -63,7 +63,7 @@ exports.initEvents = function initEvents(server) {
 
   server.on('uncaughtException', (req, res, route, err) => {
     server.log.error(err);
-    res.send(500, { message: err.message });
+    res.send(500, { code: 'InternalServer', message: err.message });
   });
 
   server.on('Cast', (req, res, err, cb) => {

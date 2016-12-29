@@ -10,9 +10,9 @@ exports.get = function scoreGetHandler(req, res, next) {
 
   Promise.all([ User.find({ }), Category.find({ }), Response.find({ }) ])
     .then(calculateScores)
-    .then(docs => res.json(docs))
-    .then(() => next())
-    .catch(err => next(err));
+    .then(res.json.bind(res))
+    .then(next)
+    .catch(next);
 };
 
 function calculateScores(promises) {
