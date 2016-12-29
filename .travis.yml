@@ -7,6 +7,6 @@ services:
   - docker
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-    docker push delta62/oscar-api
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push delta62/oscar-api;
     fi
