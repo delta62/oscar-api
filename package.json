@@ -4,7 +4,7 @@
   "description": "API server for an Oscars trivia game",
   "scripts": {
     "start": "node index.js",
-    "test": "cross-env NODE_ENV=test mocha test/**/*.js"
+    "test": "cross-env NODE_ENV=test mocha test/**/*-tests.js"
   },
   "main": "index.js",
   "repository": "git@github.com:delta62/oscar-api.git",
