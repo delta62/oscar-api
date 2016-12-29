@@ -6,7 +6,7 @@
   },
   "auth": {
     "secret": "secret",
-    "admins": [ ]
+    "admins": [ "admin" ]
   },
   "score": {
     "correct": 10,

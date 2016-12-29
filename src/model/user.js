@@ -1,4 +1,5 @@
 const mongoose = require('mongoose'),
+  config = require('config'),
   { modelFactory } = require('./model-factory');
 
 exports.userSchema = new mongoose.Schema({
@@ -16,6 +17,10 @@ exports.userSchema = new mongoose.Schema({
     index: true,
     unique: true
   }
+});
+
+exports.userSchema.virtual('admin').get(function getUserIsAdmin() {
+  return config.get('auth.admins').includes(this.username);
 });
 
 exports.userModelFactory = function userModelFactory(db) {

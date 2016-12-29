@@ -26,7 +26,7 @@ function ensureUser(user) {
 
 function signToken(user) {
   let body = {
-    admin: false,
+    admin: user.admin,
     username: user.username
   };
 

@@ -1,4 +1,5 @@
 const api = require('../../src/api'),
+  jwt = require('jsonwebtoken'),
   { expect } = require('code'),
   { modelFactory } = require('../../src/model/model-factory'),
   { userSchema } = require('../../src/model/user'),
@@ -8,15 +9,13 @@ describe('POST /login', () => {
   let agent;
 
   before(() => {
+    let User;
+
     return api.boot()
-      .then(api => {
-        let User = modelFactory(api.conn, userSchema, 'User');
-        return User.remove({ }).then(() => User.create({
-          name: 'user',
-          username: 'user1'
-        }))
-        .then(() => api);
-      })
+      .do(api => User = modelFactory(api.conn, userSchema, 'User'))
+      .do(() => User.remove({ }))
+      .do(() => User.create({ name: 'user', username: 'user1' }))
+      .do(() => User.create({ name: 'admin', username: 'admin' }))
       .then(api => agent = request(api));
   });
 
@@ -42,5 +41,21 @@ describe('POST /login', () => {
     agent.post('/login')
       .send({ username: 'somedude' })
       .expect(401, done);
+  });
+
+  it('should not log normal users in as admins', done => {
+    agent.post('/login')
+      .send({ username: 'user1' })
+      .expect(200)
+      .expect(res => expect(jwt.decode(res.body.token).admin).to.be.false())
+      .end(done);
+  });
+
+  it('should log whitelisted users in as an admin', done => {
+    agent.post('/login')
+      .send({ username: 'admin' })
+      .expect(200)
+      .expect(res => expect(jwt.decode(res.body.token).admin).to.be.true())
+      .end(done);
   });
 });
