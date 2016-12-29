@@ -67,20 +67,20 @@ exports.initEvents = function initEvents(server) {
   });
 
   server.on('Cast', (req, res, err, cb) => {
-    res.send(400, err.errors);
+    err.statusCode = 400;
     return cb();
   })
 
   server.on('Validation', (req, res, err, cb) => {
-    res.send(400, err.errors);
+    err.statusCode = 400;
     return cb();
   });
 
   server.on('Mongo', (req, res, err, cb) => {
     if (err.code === 11000) {
-      res.send(409, err);
+      err.statusCode = 409;
     }
-    cb();
+    return cb();
   });
 
   return server;
