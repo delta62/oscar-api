@@ -1,7 +1,8 @@
-const { userSchema } = require('../../src/model/user'),
-  { modelFactory } = require('../../src/model/model-factory'),
-  mongoose     = require('mongoose'),
-  { expect }   = require('code');
+const { userSchema } = require('../../src/model/user');
+const { modelFactory } = require('../../src/model/model-factory');
+const mongoose = require('mongoose');
+const { expect } = require('code');
+const { describe, before, it } = require('mocha');
 
 describe('User model', () => {
   let User;

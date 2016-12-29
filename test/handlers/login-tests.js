@@ -1,10 +1,11 @@
-const api = require('../../src/api'),
-  { err } = require('../helpers/error'),
-  jwt = require('jsonwebtoken'),
-  { expect } = require('code'),
-  { modelFactory } = require('../../src/model/model-factory'),
-  { userSchema } = require('../../src/model/user'),
-  request = require('supertest');
+const api = require('../../src/api');
+const { err } = require('../helpers/error');
+const jwt = require('jsonwebtoken');
+const { expect } = require('code');
+const { modelFactory } = require('../../src/model/model-factory');
+const { userSchema } = require('../../src/model/user');
+const request = require('supertest');
+const { describe, before, it } = require('mocha');
 
 describe('POST /login', () => {
   let agent;

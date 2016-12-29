@@ -1,8 +1,9 @@
-const api          = require('../../src/api'),
-  { err }          = require('../helpers/error'),
-  request          = require('supertest'),
-  { modelFactory } = require('../../src/model/model-factory'),
-  { userSchema }   = require('../../src/model/user');
+const api                      = require('../../src/api');
+const { err }                  = require('../helpers/error');
+const request                  = require('supertest');
+const { modelFactory }         = require('../../src/model/model-factory');
+const { userSchema }           = require('../../src/model/user');
+const { describe, before, it } = require('mocha');
 
 describe('POST /users', () => {
   let agent;

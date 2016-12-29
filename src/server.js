@@ -1,8 +1,8 @@
-const jwt  = require('restify-jwt'),
-  mongoose = require('mongoose'),
-  restify  = require('restify'),
-  { reqConnFactory } = require('./middleware/conn'),
-  config   = require('config');
+const jwt  = require('restify-jwt');
+const mongoose = require('mongoose');
+const restify  = require('restify');
+const { reqConnFactory } = require('./middleware/conn');
+const config   = require('config');
 
 exports.initConnection = function initConnection(server) {
   mongoose.Promise = Promise;
@@ -77,7 +77,7 @@ exports.initEvents = function initEvents(server) {
       message: err.message
     };
     return cb();
-  })
+  });
 
   server.on('Validation', (req, res, err, cb) => {
     err.statusCode = 400;

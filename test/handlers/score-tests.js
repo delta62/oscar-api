@@ -1,11 +1,12 @@
-const request = require('supertest'),
-  { err } = require('../helpers/error'),
-  { categoryModelFactory } = require('../../src/model/category'),
-  { responseModelFactory } = require('../../src/model/response'),
-  { userModelFactory } = require('../../src/model/user'),
-  { expect } = require('code'),
-  jwt = require('jsonwebtoken'),
-  api = require('../../src/api');
+const request = require('supertest');
+const { err } = require('../helpers/error');
+const { categoryModelFactory } = require('../../src/model/category');
+const { responseModelFactory } = require('../../src/model/response');
+const { userModelFactory } = require('../../src/model/user');
+const { expect } = require('code');
+const jwt = require('jsonwebtoken');
+const api = require('../../src/api');
+const { describe, before, it } = require('mocha');
 
 describe('GET /score', () => {
   let agent,

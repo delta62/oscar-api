@@ -1,6 +1,6 @@
-const { responseModelFactory } = require('../model/response'),
-  { categoryModelFactory } = require('../model/category'),
-  { NotFoundError, BadRequestError } = require('restify');
+const { responseModelFactory } = require('../model/response');
+const  { categoryModelFactory } = require('../model/category');
+const  { NotFoundError, BadRequestError } = require('restify');
 
 exports.browse = function responseBrowseHandler(req, res, next) {
   let Response = responseModelFactory(req.conn);

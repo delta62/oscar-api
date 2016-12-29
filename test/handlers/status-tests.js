@@ -1,6 +1,7 @@
-const api    = require('../../src/api'),
-  request    = require('supertest'),
-  { expect } = require('code');
+const api = require('../../src/api');
+const request = require('supertest');
+const { expect } = require('code');
+const { describe, before, it } = require('mocha');
 
 describe('GET /status', () => {
   let agent;

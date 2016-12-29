@@ -1,5 +1,5 @@
-const restify = require('restify'),
-  serverApi   = require('./server');
+const restify = require('restify');
+const  serverApi   = require('./server');
 
 exports.boot = function boot() {
   return Promise.resolve(restify.createServer())

@@ -1,10 +1,11 @@
-const request = require('supertest'),
-  api = require('../../src/api'),
-  jwt = require('jsonwebtoken'),
-  { err } = require('../helpers/error'),
-  { expect } = require('code'),
-  { responseModelFactory } = require('../../src/model/response'),
-  { categoryModelFactory } = require('../../src/model/category');
+const request = require('supertest');
+const api = require('../../src/api');
+const jwt = require('jsonwebtoken');
+const { err } = require('../helpers/error');
+const { expect } = require('code');
+const { responseModelFactory } = require('../../src/model/response');
+const { categoryModelFactory } = require('../../src/model/category');
+const { describe, before, it } = require('mocha');
 
 describe('PUT /response/:categoryId', () => {
   let agent,

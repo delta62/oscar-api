@@ -1,6 +1,7 @@
-const mongoose = require('mongoose'),
-  { expect } = require('code'),
-  { responseModelFactory } = require('../../src/model/response');
+const mongoose = require('mongoose');
+const { expect } = require('code');
+const { responseModelFactory } = require('../../src/model/response');
+const { describe, before, it } = require('mocha');
 
 describe('Response model', () => {
   let Response;

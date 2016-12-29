@@ -1,7 +1,7 @@
-const jwt  = require('jsonwebtoken'),
-  { UnauthorizedError } = require('restify'),
-  { modelFactory } = require('../model/model-factory'),
-  { userSchema } = require('../model/user');
+const jwt  = require('jsonwebtoken');
+const  { UnauthorizedError } = require('restify');
+const  { modelFactory } = require('../model/model-factory');
+const  { userSchema } = require('../model/user');
 
 exports.post = function loginHandler(req, res, next) {
   if (!req.body) {

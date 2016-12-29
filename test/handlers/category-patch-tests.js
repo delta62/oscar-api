@@ -1,8 +1,9 @@
-const request = require('supertest'),
-  { categoryModelFactory } = require('../../src/model/category'),
-  { err } = require('../helpers/error'),
-  jwt = require('jsonwebtoken'),
-  api = require('../../src/api');
+const request = require('supertest');
+const { categoryModelFactory } = require('../../src/model/category');
+const { err } = require('../helpers/error');
+const jwt = require('jsonwebtoken');
+const api = require('../../src/api');
+const { describe, before, it } = require('mocha');
 
 require('promise-do');
 
@@ -19,7 +20,7 @@ describe('PATCH /category/:id', () => {
       .do(() => Category.create({ name: 'c1', options: [ 'a' ] }))
       .do(() => Category.findOne({ name: 'c1' }).then(doc => id = doc.id))
       .then(api => agent = request(api));
-  })
+  });
 
   it('should return 401 when not authenticated', done => {
     agent
@@ -37,7 +38,7 @@ describe('PATCH /category/:id', () => {
       .expect(400)
       .expect(err('BadRequestError'))
       .end(done);
-  })
+  });
 
   it('should return 403 when not an admin', done => {
     let nonAdminToken = jwt.sign({ admin: false }, 'secret');
@@ -51,7 +52,7 @@ describe('PATCH /category/:id', () => {
 
   it('should return 404 when updating an unknown category', done => {
     agent
-      .patch(`/category/58640422292044a2ef71aa0c`)
+      .patch('/category/58640422292044a2ef71aa0c')
       .send({ answer: 'a' })
       .set('Authorization', `Bearer ${token}`)
       .expect(404)

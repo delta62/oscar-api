@@ -1,6 +1,6 @@
-const mongoose = require('mongoose'),
-  config = require('config'),
-  { modelFactory } = require('./model-factory');
+const mongoose = require('mongoose');
+const  config = require('config');
+const  { modelFactory } = require('./model-factory');
 
 exports.userSchema = new mongoose.Schema({
   name: {

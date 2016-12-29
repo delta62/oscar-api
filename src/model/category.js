@@ -1,5 +1,5 @@
-const mongoose = require('mongoose'),
-  { modelFactory } = require('./model-factory');
+const mongoose = require('mongoose');
+const  { modelFactory } = require('./model-factory');
 
 let schema = new mongoose.Schema({
   name: {

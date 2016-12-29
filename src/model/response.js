@@ -1,5 +1,5 @@
-const mongoose = require('mongoose'),
-  { modelFactory } = require('./model-factory');
+const mongoose = require('mongoose');
+const  { modelFactory } = require('./model-factory');
 
 exports.responseSchema = new mongoose.Schema({
   username: {

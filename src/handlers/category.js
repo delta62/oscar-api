@@ -1,10 +1,5 @@
-const { categoryModelFactory } = require('../model/category'),
-  {
-    ForbiddenError,
-    BadRequestError,
-    NotFoundError,
-    ConflictError
-  } = require('restify');
+const { categoryModelFactory } = require('../model/category');
+const { ForbiddenError, NotFoundError } = require('restify');
 
 exports.browse = function categoryBrowseHandler(req, res, next) {
   let Category = categoryModelFactory(req.conn);

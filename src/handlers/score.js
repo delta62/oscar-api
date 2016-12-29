@@ -1,7 +1,7 @@
-const config = require('config'),
-  { userModelFactory } = require('../model/user'),
-  { categoryModelFactory } = require('../model/category'),
-  { responseModelFactory } = require('../model/response');
+const config = require('config');
+const  { userModelFactory } = require('../model/user');
+const  { categoryModelFactory } = require('../model/category');
+const  { responseModelFactory } = require('../model/response');
 
 exports.get = function scoreGetHandler(req, res, next) {
   let User = userModelFactory(req.conn);

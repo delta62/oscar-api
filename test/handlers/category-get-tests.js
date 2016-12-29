@@ -1,10 +1,11 @@
-const request = require('supertest'),
-  api = require('../../src/api'),
-  jwt = require('jsonwebtoken'),
-  { err } = require('../helpers/error.js'),
-  { expect } = require('code'),
-  { modelFactory } = require('../../src/model/model-factory'),
-  { categorySchema } = require('../../src/model/category');
+const request = require('supertest');
+const api = require('../../src/api');
+const jwt = require('jsonwebtoken');
+const { err } = require('../helpers/error.js');
+const { expect } = require('code');
+const { modelFactory } = require('../../src/model/model-factory');
+const { categorySchema } = require('../../src/model/category');
+const { describe, before, it } = require('mocha');
 
 describe('GET /category', () => {
   let agent,
@@ -32,7 +33,7 @@ describe('GET /category', () => {
       .get('/category')
       .expect(err('InvalidCredentials'))
       .expect(401, done);
-  })
+  });
 
   it('should respond with JSON', done => {
     agent
