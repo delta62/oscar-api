@@ -1,17 +1,17 @@
 const request = require('supertest');
 const { err } = require('../helpers/error');
+const { sign } = require('../helpers/auth');
 const { boot } = require('../../src/api');
 const { expect } = require('code');
-const jwt = require('jsonwebtoken');
 const { responseModelFactory } = require('../../src/model/response');
 const { describe, before, it } = require('mocha');
 
 describe('GET /response', () => {
-  let agent,
-    token = jwt.sign({ username: 'u' }, 'secret');
+  let agent, token;
 
   before(() => {
     let Response;
+    token = sign('u');
     return boot()
       .do(api => Response = responseModelFactory(api.conn))
       .do(() => Response.remove({ }))

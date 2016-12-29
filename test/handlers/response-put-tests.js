@@ -1,6 +1,6 @@
 const request = require('supertest');
 const { boot } = require('../../src/api');
-const jwt = require('jsonwebtoken');
+const { sign } = require('../helpers/auth');
 const { err } = require('../helpers/error');
 const { expect } = require('code');
 const { responseModelFactory } = require('../../src/model/response');
@@ -8,13 +8,11 @@ const { categoryModelFactory } = require('../../src/model/category');
 const { describe, before, it } = require('mocha');
 
 describe('PUT /response/:categoryId', () => {
-  let agent,
-    catId,
-    token = jwt.sign({ username: 'user1' }, 'secret'),
-    Response;
+  let agent, catId, token, Response;
 
   before(() => {
     let Category;
+    token = sign('user1');
 
     return boot()
       .do(api => Response = responseModelFactory(api.conn))

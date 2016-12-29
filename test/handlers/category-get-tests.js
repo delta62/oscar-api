@@ -1,7 +1,7 @@
 const request = require('supertest');
 const { boot } = require('../../src/api');
-const jwt = require('jsonwebtoken');
-const { err } = require('../helpers/error.js');
+const { sign } = require('../helpers/auth');
+const { err } = require('../helpers/error');
 const { expect } = require('code');
 const { categoryModelFactory } = require('../../src/model/category');
 const { describe, before, it } = require('mocha');
@@ -9,10 +9,11 @@ const { describe, before, it } = require('mocha');
 describe('GET /category', () => {
   let agent,
     closed = new Date(2001, 0, 1),
-    token = jwt.sign({ admin: false }, 'secret');
+    token;
 
   before(() => {
     let Category;
+    token = sign('user1');
     return boot()
       .do(api=> Category = categoryModelFactory(api.conn))
       .do(() => Category.remove({ }))

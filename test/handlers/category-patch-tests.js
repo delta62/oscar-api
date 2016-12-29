@@ -1,19 +1,17 @@
 const request = require('supertest');
 const { categoryModelFactory } = require('../../src/model/category');
 const { err } = require('../helpers/error');
-const jwt = require('jsonwebtoken');
+const { sign } = require('../helpers/auth');
 const { boot } = require('../../src/api');
 const { describe, before, it } = require('mocha');
 
 require('promise-do');
 
 describe('PATCH /category/:id', () => {
-  let agent,
-    token = jwt.sign({ admin: true }, 'secret'),
-    id,
-    Category;
+  let agent, token, id, Category;
 
   before(() => {
+    token = sign('admin');
     return boot()
       .do(api => Category = categoryModelFactory(api.conn))
       .do(() => Category.remove({ }))
@@ -41,7 +39,7 @@ describe('PATCH /category/:id', () => {
   });
 
   it('should return 403 when not an admin', done => {
-    let nonAdminToken = jwt.sign({ admin: false }, 'secret');
+    let nonAdminToken = sign('user1');
     agent
       .patch(`/category/${id}`)
       .set('Authorization', `Bearer ${nonAdminToken}`)
@@ -61,7 +59,7 @@ describe('PATCH /category/:id', () => {
   });
 
   it('should return 200 on success', done => {
-    let token = jwt.sign({ admin: true }, 'secret');
+    let token = sign('admin');
     agent
       .patch(`/category/${id}`)
       .send({ name: 'c1', options: [ 'a' ] })
