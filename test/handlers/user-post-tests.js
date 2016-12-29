@@ -1,4 +1,5 @@
 const api          = require('../../src/api'),
+  { err }          = require('../helpers/error'),
   request          = require('supertest'),
   { modelFactory } = require('../../src/model/model-factory'),
   { userSchema }   = require('../../src/model/user');
@@ -24,12 +25,16 @@ describe('POST /users', () => {
   it('should return 409 when the username is already taken', done => {
     agent.post('/user')
       .send({ name: 'bar', username: 'bar' })
-      .expect(409, done);
+      .expect(409)
+      .expect(err('ConflictError'))
+      .end(done);
   });
 
   it('should reutrn 400 when input is bad', done => {
     agent.post('/user')
       .send({ shoe: 'banana' })
-      .expect(400, done);
+      .expect(400)
+      .expect(err('BadRequestError'))
+      .end(done);
   });
 });

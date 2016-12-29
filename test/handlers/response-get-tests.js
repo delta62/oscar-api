@@ -1,4 +1,5 @@
 const request = require('supertest'),
+  { err } = require('../helpers/error'),
   api = require('../../src/api'),
   { expect } = require('code'),
   jwt = require('jsonwebtoken'),
@@ -22,14 +23,17 @@ describe('GET /response', () => {
     agent
       .get('/response')
       .set('Authorization', `Bearer ${token}`)
+      .expect(200)
       .expect('Content-Type', 'application/json')
-      .expect(200, done);
+      .end(done);
   });
 
   it('should respond with 401 when not authenticated', done => {
     agent
       .get('/response')
-      .expect(401, done);
+      .expect(401)
+      .expect(err('InvalidCredentials'))
+      .end(done);
   });
 
   it('should respond with multiple responses', done => {

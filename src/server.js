@@ -67,25 +67,34 @@ exports.initEvents = function initEvents(server) {
 
   server.on('uncaughtException', (req, res, route, err) => {
     server.log.error(err);
-    res.send(500, { code: 'InternalServer', message: err.message });
+    res.send(500, { code: 'InternalServerError', message: err.message });
   });
 
   server.on('Cast', (req, res, err, cb) => {
-    err.code = 'BadRequest';
     err.statusCode = 400;
+    err.body = {
+      code: 'BadRequestError',
+      message: err.message
+    };
     return cb();
   })
 
   server.on('Validation', (req, res, err, cb) => {
-    err.code = 'BadRequest';
     err.statusCode = 400;
+    err.body = {
+      code: 'BadRequestError',
+      message: err.message
+    };
     return cb();
   });
 
   server.on('Mongo', (req, res, err, cb) => {
     if (err.code === 11000) {
-      err.code = 'Conflict';
       err.statusCode = 409;
+      err.body = {
+        code: 'ConflictError',
+        message: err.message
+      };
     }
     return cb();
   });

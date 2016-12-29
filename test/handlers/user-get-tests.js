@@ -1,4 +1,5 @@
 const api = require('../../src/api'),
+  { err } = require('../helpers/error'),
   { userModelFactory } = require('../../src/model/user'),
   { expect } = require('code'),
   jwt = require('jsonwebtoken'),
@@ -28,22 +29,26 @@ describe('GET /user', () => {
   it('should return 401 when not authenticated', done => {
     agent
       .get('/user')
-      .expect(401, done);
+      .expect(401)
+      .expect(err('InvalidCredentials'))
+      .end(done);
   });
 
   it('should return the current user\'s username', done => {
     agent
       .get('/user')
       .set('Authorization', `Bearer ${token}`)
+      .expect(200)
       .expect(res => expect(res.body.username).to.equal('user1'))
-      .expect(200, done);
+      .end(done);
   });
 
   it('should return the current user\'s display name', done => {
     agent
       .get('/user')
       .set('Authorization', `Bearer ${token}`)
+      .expect(200)
       .expect(res => expect(res.body.name).to.equal('User One'))
-      .expect(200, done);
+      .end(done);
   });
 });

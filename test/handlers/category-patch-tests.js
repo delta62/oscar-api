@@ -1,5 +1,6 @@
 const request = require('supertest'),
   { categoryModelFactory } = require('../../src/model/category'),
+  { err } = require('../helpers/error'),
   jwt = require('jsonwebtoken'),
   api = require('../../src/api');
 
@@ -21,7 +22,11 @@ describe('PATCH /category/:id', () => {
   })
 
   it('should return 401 when not authenticated', done => {
-    agent.patch(`/category/${id}`).expect(401, done);
+    agent
+      .patch(`/category/${id}`)
+      .expect(401)
+      .expect(err('InvalidCredentials'))
+      .end(done);
   });
 
   it('should return 400 when the request is bad', done => {
@@ -29,7 +34,9 @@ describe('PATCH /category/:id', () => {
       .patch(`/category/${id}`)
       .send({ closed: 'cheesy nachos' })
       .set('Authorization', `Bearer ${token}`)
-      .expect(400, done);
+      .expect(400)
+      .expect(err('BadRequestError'))
+      .end(done);
   })
 
   it('should return 403 when not an admin', done => {
@@ -37,7 +44,9 @@ describe('PATCH /category/:id', () => {
     agent
       .patch(`/category/${id}`)
       .set('Authorization', `Bearer ${nonAdminToken}`)
-      .expect(403, done);
+      .expect(403)
+      .expect(err('ForbiddenError'))
+      .end(done);
   });
 
   it('should return 404 when updating an unknown category', done => {
@@ -45,7 +54,9 @@ describe('PATCH /category/:id', () => {
       .patch(`/category/58640422292044a2ef71aa0c`)
       .send({ answer: 'a' })
       .set('Authorization', `Bearer ${token}`)
-      .expect(404, done);
+      .expect(404)
+      .expect(err('NotFoundError'))
+      .end(done);
   });
 
   it('should return 200 on success', done => {

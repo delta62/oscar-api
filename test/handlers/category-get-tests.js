@@ -1,6 +1,7 @@
 const request = require('supertest'),
   api = require('../../src/api'),
   jwt = require('jsonwebtoken'),
+  { err } = require('../helpers/error.js'),
   { expect } = require('code'),
   { modelFactory } = require('../../src/model/model-factory'),
   { categorySchema } = require('../../src/model/category');
@@ -29,6 +30,7 @@ describe('GET /category', () => {
   it('should respond with 401 when not logged in', done => {
     agent
       .get('/category')
+      .expect(err('InvalidCredentials'))
       .expect(401, done);
   })
 

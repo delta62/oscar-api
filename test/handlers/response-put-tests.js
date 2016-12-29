@@ -1,7 +1,7 @@
-
 const request = require('supertest'),
   api = require('../../src/api'),
   jwt = require('jsonwebtoken'),
+  { err } = require('../helpers/error'),
   { expect } = require('code'),
   { responseModelFactory } = require('../../src/model/response'),
   { categoryModelFactory } = require('../../src/model/category');
@@ -28,7 +28,9 @@ describe('PUT /response/:categoryId', () => {
   it('should return 401 when not authenticated', done => {
     agent
       .put(`/response/${catId}`)
-      .expect(401, done);
+      .expect(401)
+      .expect(err('InvalidCredentials'))
+      .end(done);
   });
 
   it('should respond with JSON', done => {
@@ -48,8 +50,10 @@ describe('PUT /response/:categoryId', () => {
     agent
       .put('/response/58644ded8eb74fa80a65979e')
       .send({ value: 'a' })
+      .expect(404)
       .set('Authorization', `Bearer ${token}`)
-      .expect(404, done);
+      .expect(err('NotFoundError'))
+      .end(done);
   });
 
   it('should return 400 when the option doesn\'t exist', done => {
@@ -57,7 +61,9 @@ describe('PUT /response/:categoryId', () => {
       .put(`/response/${catId}`)
       .send({ value: 'z' })
       .set('Authorization', `Bearer ${token}`)
-      .expect(400, done);
+      .expect(400)
+      .expect(err('BadRequestError'))
+      .end(done);
   });
 
   it('should set the category of the response', () => {
@@ -84,8 +90,9 @@ describe('PUT /response/:categoryId', () => {
     agent
       .put(`/response/${catId}`)
       .send({ value: 'b' })
+      .expect(201)
       .set('Authorization', `Bearer ${token}`)
-      .expect(201, done);
+      .end(done);
   });
 
   it('should update the modification date of an existing response', () => {

@@ -1,4 +1,5 @@
 const request = require('supertest'),
+  { err } = require('../helpers/error'),
   { categoryModelFactory } = require('../../src/model/category'),
   { responseModelFactory } = require('../../src/model/response'),
   { userModelFactory } = require('../../src/model/user'),
@@ -48,7 +49,9 @@ describe('GET /score', () => {
   it('should respond with 401 when not authenticated', done => {
     agent
       .get('/score')
-      .expect(401, done);
+      .expect(401)
+      .expect(err('InvalidCredentials'))
+      .end(done);
   });
 
   it('should respond with all users\' scores', done => {

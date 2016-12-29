@@ -1,4 +1,5 @@
 const api = require('../../src/api'),
+  { err } = require('../helpers/error'),
   jwt = require('jsonwebtoken'),
   { expect } = require('code'),
   { modelFactory } = require('../../src/model/model-factory'),
@@ -34,13 +35,19 @@ describe('POST /login', () => {
   });
 
   it('should return 401 without credentials', done => {
-    agent.post('/login').expect(401, done);
+    agent
+      .post('/login')
+      .expect(401)
+      .expect(err('UnauthorizedError'))
+      .end(done);
   });
 
   it('should return 401 with invalid credentials', done => {
     agent.post('/login')
       .send({ username: 'somedude' })
-      .expect(401, done);
+      .expect(401)
+      .expect(err('UnauthorizedError'))
+      .end(done);
   });
 
   it('should not log normal users in as admins', done => {
