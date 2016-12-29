@@ -4,7 +4,7 @@ const request = require('supertest'),
   jwt = require('jsonwebtoken'),
   { responseModelFactory } = require('../../src/model/response');
 
-describe.only('GET /response', () => {
+describe('GET /response', () => {
   let agent,
     token = jwt.sign({ username: 'u' }, 'secret');
 

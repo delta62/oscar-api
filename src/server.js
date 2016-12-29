@@ -30,7 +30,7 @@ exports.initHandlers = function initHandlers(server) {
   server.get('/category',       require('./handlers/category').browse);
   server.patch('/category/:id', require('./handlers/category').patch);
   server.get('/response',       require('./handlers/response').browse);
-  server.put('/response',       require('./handlers/response').put);
+  server.put('/response/:id',   require('./handlers/response').put);
   server.get('/user',           require('./handlers/user').get);
   server.post('/user',          require('./handlers/user').post);
   server.post('/login',         require('./handlers/login').post);
