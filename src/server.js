@@ -53,12 +53,16 @@ exports.initMiddleware = function initMiddleware(server) {
 
 exports.initEvents = function initEvents(server) {
   server.on('after', (req, res, route, err) => {
-    server.log.info('after', {
+    let log = {
       status: res.statusCode,
       method: req.method,
-      path: req.path(),
-      err
-    });
+      path: req.path()
+    };
+
+    if (err && err instanceof Error) {
+      log.err = err;
+    }
+    server.log.info('after', log);
   });
 
   server.on('uncaughtException', (req, res, route, err) => {
@@ -67,17 +71,20 @@ exports.initEvents = function initEvents(server) {
   });
 
   server.on('Cast', (req, res, err, cb) => {
+    err.code = 'BadRequest';
     err.statusCode = 400;
     return cb();
   })
 
   server.on('Validation', (req, res, err, cb) => {
+    err.code = 'BadRequest';
     err.statusCode = 400;
     return cb();
   });
 
   server.on('Mongo', (req, res, err, cb) => {
     if (err.code === 11000) {
+      err.code = 'Conflict';
       err.statusCode = 409;
     }
     return cb();
