@@ -34,6 +34,7 @@ exports.initHandlers = function initHandlers(server) {
   server.get('/user',           require('./handlers/user').get);
   server.post('/user',          require('./handlers/user').post);
   server.post('/login',         require('./handlers/login').post);
+  server.get('/score',          require('./handlers/score').get);
 
   return server;
 };

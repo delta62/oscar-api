@@ -8,6 +8,10 @@
     "secret": "secret",
     "admins": [ ]
   },
+  "score": {
+    "correct": 10,
+    "incorrect": -1
+  },
   "log": {
     "level": "FATAL"
   }

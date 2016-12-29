@@ -5,7 +5,12 @@
     "db": "oscars"
   },
   "auth": {
-    "secret": "secret"
+    "secret": "secret",
+    "admins": [ "admin" ]
+  },
+  "score": {
+    "correct": 10,
+    "incorrect": 0
   },
   "log": {
     "level": "INFO"
