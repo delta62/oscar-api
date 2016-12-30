@@ -14,6 +14,9 @@ You need to provide configuration settings to run from docker:
 docker run delta62/oscar-api -e 'NODE_CONFIG={"db.host":"localhost"...}'
 ```
 
+But you probably just want to use the [oscar-dev](https://github.com/delta62/oscar-dev)
+repository in this case; it sets all this junk up for you.
+
 #### Locally
 
 First, install NPM packages with `yarn`. Then, `yarn start` will start the server.
