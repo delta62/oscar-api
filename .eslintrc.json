@@ -1,9 +1,12 @@
 {
+    "plugins": [ "import" ],
     "env": {
         "es6": true,
         "node": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+      "eslint:recommended"
+    ],
     "rules": {
         "indent": [
             "error",
@@ -21,8 +24,18 @@
             "error",
             "always"
         ],
-        "max-len": [
-          "error"
-        ]
+        "max-len": [ "error" ],
+        "import/no-unresolved": "error",
+        "import/named": "error",
+        "import/default": "error",
+        "import/no-absolute-path": "error",
+        "import/no-dynamic-require": "error",
+        "import/export": "error",
+        "import/no-extraneous-dependencies": "error",
+        "import/no-mutable-exports": "error",
+        "import/no-amd": "error",
+        "import/no-namespace": "error",
+        "import/extensions": "error",
+        "import/newline-after-import": "error"
     }
 }
