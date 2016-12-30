@@ -27,16 +27,16 @@ You can run `yarn test` to run the tests.
 Configuration is handled by [config](https://www.npmjs.com/package/config).
 The following configuration options are available:
 
-| Name            | Description                                            |
-| --------------- | ------------------------------------------------------ |
-| db.host         | hostname of the mongo database server                  |
-| db.port         | port of the mongo database server                      |
-| db.dp           | database name to use                                   |
-| auth.secret     | The key to sign auth tokens with                       |
-| auth.admins     | An array of usernames that should be treated as admins |
-| score.correct   | The number of points awarded for a corect answer       |
-| score.incorrect | The number of points awarded for an incorrect answer   |
-| log.level       | How noisy the logs should be                           |
+| Name            | Type     | Description                                            |
+| --------------- | -------- | ------------------------------------------------------ |
+| db.host         | string   | Hostname of the mongo database server                  |
+| db.port         | number   | Port of the mongo database server                      |
+| db.dp           | string   | Database name to use                                   |
+| auth.secret     | string   | The key to sign auth tokens with                       |
+| auth.admins     | string[] | An array of usernames that should be treated as admins |
+| score.correct   | number   | The number of points awarded for a corect answer       |
+| score.incorrect | number   | The number of points awarded for an incorrect answer   |
+| log.level       | string   | How noisy the logs should be                           |
 
 ## API Documentation
 
