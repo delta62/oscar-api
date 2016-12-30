@@ -20,7 +20,7 @@ repository in this case; it sets all this junk up for you.
 #### Locally
 
 First, install NPM packages with `yarn`. Then, `yarn start` will start the server.
-You can run `yarn test` to run the tests.
+You can do `yarn test` to run the tests.
 
 ## Configuration
 
