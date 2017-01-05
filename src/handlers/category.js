@@ -1,5 +1,6 @@
-const { categoryModelFactory } = require('../model/category');
-const { ForbiddenError, NotFoundError } = require('restify');
+const { categoryModelFactory }   = require('../model/category');
+const { categoryPatchValidator } = require('../validators/category');
+const assert                     = require('assert');
 
 exports.browse = function categoryBrowseHandler(req, res, next) {
   let Category = categoryModelFactory(req.conn);
@@ -10,22 +11,11 @@ exports.browse = function categoryBrowseHandler(req, res, next) {
 };
 
 exports.patch = function categoryPatchHandler(req, res, next) {
-  if (!req.user.admin) {
-    return next(new ForbiddenError());
-  }
-
   let Category = categoryModelFactory(req.conn);
-  let update = {
-    answer: req.body.answer,
-    closed: req.body.closed
-  };
 
-  Category.findByIdAndUpdate(req.params.id, update, { new: true })
-    .then(cat => {
-      if (!cat) throw new NotFoundError();
-      return cat;
-    })
-    .then(cat => cat.save())
+  categoryPatchValidator(req)
+    .then(model => Category.findByIdAndUpdate(req.params.id, model))
+    .then(assert)
     .then(res.json.bind(res))
     .then(next)
     .catch(next);
