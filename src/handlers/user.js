@@ -1,4 +1,5 @@
-const { userModelFactory } = require('../model/user');
+const { userModelFactory }  = require('../model/user');
+const { userPostValidator } = require('../validators/user');
 
 exports.get = function userGetHandler(req, res, next) {
   let User = userModelFactory(req.conn);
@@ -10,7 +11,8 @@ exports.get = function userGetHandler(req, res, next) {
 
 exports.post = function userPostHandler(req, res, next) {
   let User = userModelFactory(req.conn);
-  User.create(req.body)
+  userPostValidator(req)
+    .then(model => User.create(model))
     .then(() => res.send(201))
     .then(next)
     .catch(next);
