@@ -1,7 +1,9 @@
-const mongoose = require('mongoose');
-const  { modelFactory } = require('./model-factory');
+const { BadRequestError } = require('restify');
+const { Schema }          = require('mongoose');
+const { modelFactory }    = require('./model-factory');
+const { ensureFound }     = require('../util');
 
-let schema = new mongoose.Schema({
+const schema = new Schema({
   name: {
     type: String,
     required: true,
@@ -12,11 +14,21 @@ let schema = new mongoose.Schema({
     type: [ String ],
     required: true
   },
+  responses: {
+    type: [{ type: Schema.Types.ObjectId, ref: 'Response' }]
+  },
   answer: String,
   closed: Date
 });
 
-exports.Category = mongoose.model('Category', schema);
+schema.statics.ensureValid = function ensureValid(id, option) {
+  return Promise.resolve()
+    .then(() => this.findById(id))
+    .do(ensureFound)
+    .then(doc => {
+      if (!doc.options.includes(option)) throw new BadRequestError();
+    });
+};
 
 exports.categoryModelFactory = function categoryModelFactory(db) {
   return modelFactory(db, schema, 'Category');

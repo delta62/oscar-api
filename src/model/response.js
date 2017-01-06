@@ -1,13 +1,14 @@
-const mongoose = require('mongoose');
-const  { modelFactory } = require('./model-factory');
+const { Schema } = require('mongoose');
+const { modelFactory } = require('./model-factory');
 
-exports.responseSchema = new mongoose.Schema({
+const responseSchema = new Schema({
   username: {
     type: String,
     required: true
   },
   category: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
     required: true
   },
   value: {
@@ -18,6 +19,8 @@ exports.responseSchema = new mongoose.Schema({
   timestamps: true
 });
 
+exports.responseSchema = responseSchema;
+
 exports.responseModelFactory = function responseModelFactory(db) {
-  return modelFactory(db, exports.responseSchema, 'Response');
+  return modelFactory(db, responseSchema, 'Response');
 };

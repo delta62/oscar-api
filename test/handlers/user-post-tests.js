@@ -9,23 +9,22 @@ describe('POST /users', () => {
   let agent;
 
   before(() => {
+    let User;
     return boot()
-      .then(api => {
-        let User = modelFactory(api.conn, userSchema, 'User');
-        return User.remove({ }).then(() => api);
-      })
+      .do(api => User = modelFactory(api.conn, userSchema, 'User'))
+      .do(() => User.remove({ }))
       .then(api => agent = request(api));
   });
 
   it('should return 201 on success', done => {
     agent.post('/user')
-      .send({ name: 'foo', username: 'bar' })
+      .send({ name: 'foo bar', username: 'bar' })
       .expect(201, done);
   });
 
   it('should return 409 when the username is already taken', done => {
     agent.post('/user')
-      .send({ name: 'bar', username: 'bar' })
+      .send({ name: 'bar baz', username: 'bar' })
       .expect(409)
       .expect(err('ConflictError'))
       .end(done);
