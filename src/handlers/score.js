@@ -1,7 +1,7 @@
 const config = require('config');
-const  { userModelFactory } = require('../model/user');
-const  { categoryModelFactory } = require('../model/category');
-const  { responseModelFactory } = require('../model/response');
+const { userModelFactory } = require('../model/user');
+const { categoryModelFactory } = require('../model/category');
+const { responseModelFactory } = require('../model/response');
 
 exports.get = function scoreGetHandler(req, res, next) {
   let User = userModelFactory(req.conn);
@@ -31,7 +31,8 @@ function calculateUserScore(username, categories, responses) {
       return acc;
     }
 
-    let category = categories.find(cat => cat.name === res.category);
+    let category = categories
+      .find(cat => cat._id.toString() === res.category.toString());
     let questionScore = res.value === category.answer
       ? config.get('score.correct')
       : config.get('score.incorrect');

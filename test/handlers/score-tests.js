@@ -9,7 +9,7 @@ const { boot } = require('../../src/api');
 const { describe, before, it } = require('mocha');
 
 describe('GET /score', () => {
-  let agent, token;
+  let agent, token, cat1Id, cat2Id;
 
   before(() => {
     let Category, Response, User;
@@ -21,16 +21,18 @@ describe('GET /score', () => {
       .do(() => Category.remove({ }))
       .do(() => Category.create({ name: 'c1', options: [ 'a' ], answer: 'a' }))
       .do(() => Category.create({ name: 'c2', options: [ 'a' ], answer: 'a' }))
+      .do(() => Category.findOne({ name: 'c1' }).then(cat => cat1Id = cat._id))
+      .do(() => Category.findOne({ name: 'c2' }).then(cat => cat2Id = cat._id))
       .do(() => Response.remove({ }))
       .do(() => Response.create([
-        { username: 'user1', category: 'c1', value: 'a' },
-        { username: 'user1', category: 'c2', value: 'a' },
-        { username: 'user2', category: 'c1', value: 'b' },
-        { username: 'user2', category: 'c2', value: 'b' },
-        { username: 'user3', category: 'c1', value: 'a' },
-        { username: 'user4', category: 'c1', value: 'b' },
-        { username: 'user5', category: 'c1', value: 'a' },
-        { username: 'user5', category: 'c2', value: 'b' }
+        { username: 'user1', category: cat1Id, value: 'a' },
+        { username: 'user1', category: cat2Id, value: 'a' },
+        { username: 'user2', category: cat1Id, value: 'b' },
+        { username: 'user2', category: cat2Id, value: 'b' },
+        { username: 'user3', category: cat1Id, value: 'a' },
+        { username: 'user4', category: cat1Id, value: 'b' },
+        { username: 'user5', category: cat1Id, value: 'a' },
+        { username: 'user5', category: cat2Id, value: 'b' }
       ]))
       .do(() => User.remove({ }))
       .do(() => User.create({ name: 'User 1', username: 'user1' }))
