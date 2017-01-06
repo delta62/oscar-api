@@ -1,6 +1,6 @@
 const { categoryModelFactory }   = require('../model/category');
 const { categoryPatchValidator } = require('../validators/category');
-const assert                     = require('assert');
+const { ensureFound }            = require('../util');
 
 exports.browse = function categoryBrowseHandler(req, res, next) {
   let Category = categoryModelFactory(req.conn);
@@ -12,10 +12,9 @@ exports.browse = function categoryBrowseHandler(req, res, next) {
 
 exports.patch = function categoryPatchHandler(req, res, next) {
   let Category = categoryModelFactory(req.conn);
-
   categoryPatchValidator(req)
     .then(model => Category.findByIdAndUpdate(req.params.id, model))
-    .then(assert)
+    .do(ensureFound)
     .then(res.json.bind(res))
     .then(next)
     .catch(next);

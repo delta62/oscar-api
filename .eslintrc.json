@@ -21,8 +21,7 @@
             "error",
             "always"
         ],
-        "max-len": [
-          "error"
-        ]
+        "max-len": [ "error" ],
+        "no-console": [ "warn" ]
     }
 }
