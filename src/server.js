@@ -1,6 +1,7 @@
 const config = require('config');
 const jwt = require('restify-jwt');
 const restify = require('restify');
+const { uptimePlugin } = require('./uptime');
 const { reqConnFactory } = require('./middleware/conn');
 const { dbConnectionFactory } = require('./connection-factory');
 const {
@@ -18,7 +19,7 @@ exports.initConnection = function initConnection(server) {
 
 exports.initLogging = function initLogging(server) {
   server.log.level(config.get('log.level'));
-  server.startedAt = +(new Date());
+  uptimePlugin(server);
 
   return server;
 };
