@@ -12,7 +12,7 @@ describe('Response model', () => {
   });
 
   it('should require a username', done => {
-    Response.create({  })
+    new Response({ }).validate()
       .catch(err => {
         expect(err.errors.username).to.exist();
         done();
@@ -20,7 +20,7 @@ describe('Response model', () => {
   });
 
   it('should require a category name', done => {
-    Response.create({  })
+    new Response({ }).validate()
       .catch(err => {
         expect(err.errors.category).to.exist();
         done();
@@ -28,7 +28,7 @@ describe('Response model', () => {
   });
 
   it('should require a value', done => {
-    Response.create({  })
+    new Response({ }).validate()
       .catch(err => {
         expect(err.errors.value).to.exist();
         done();
@@ -38,7 +38,7 @@ describe('Response model', () => {
   it('should pass validation with valid data', () => {
     return new Response({
       username: 'user1',
-      category: 'Best Motion Picture',
+      category: '58644ded8eb74fa80a65979e',
       value: 'Elmo'
     }).validate();
   });

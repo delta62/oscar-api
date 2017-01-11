@@ -67,7 +67,7 @@ describe('PUT /response/:categoryId', () => {
 
   it('should set the category of the response', () => {
     return Response.findOne({ username: 'user1' })
-      .then(doc => expect(doc.category).to.equal('c'));
+      .then(doc => expect(doc.category.toString()).to.equal(catId));
   });
 
   it('should set the username of the response', () => {

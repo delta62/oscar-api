@@ -51,7 +51,7 @@ describe('PATCH /category/:id', () => {
   it('should return 404 when updating an unknown category', done => {
     agent
       .patch('/category/58640422292044a2ef71aa0c')
-      .send({ answer: 'a' })
+      .send({ answer: 'a', closed: '2015-01-01' })
       .set('Authorization', `Bearer ${token}`)
       .expect(404)
       .expect(err('NotFoundError'))
@@ -62,7 +62,7 @@ describe('PATCH /category/:id', () => {
     let token = sign('admin');
     agent
       .patch(`/category/${id}`)
-      .send({ name: 'c1', options: [ 'a' ] })
+      .send({ answer: 'a', closed: '2013-06-07' })
       .set('Authorization', `Bearer ${token}`)
       .expect(200, done);
   });

@@ -13,6 +13,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "config": "^1.24.0",
+    "joi": "^10.1.0",
     "jsonwebtoken": "^7.2.1",
     "mongoose": "^4.7.4",
     "promise-do": "^0.0.2",
