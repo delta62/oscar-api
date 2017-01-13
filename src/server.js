@@ -1,7 +1,6 @@
 const config                  = require('config');
 const jwt                     = require('restify-jwt');
 const restify                 = require('restify');
-const { uptimePlugin }        = require('./uptime');
 const { modelCache }          = require('./middleware/model-cache');
 const { dbConnectionFactory } = require('./connection-factory');
 const {
@@ -17,13 +16,13 @@ exports.initConnection = function initConnection(server) {
 
 exports.initLogging = function initLogging(server) {
   server.log.level(config.get('log.level'));
-  uptimePlugin(server);
+  server.startedAt = +new Date();
 
   return server;
 };
 
 exports.initHandlers = function initHandlers(server) {
-  server.get('/status',         require('./handlers/status').get(server));
+  server.get('/status',         require('./handlers/status').get);
   server.get('/category',       require('./handlers/category').browse);
   server.patch('/category/:id', require('./handlers/category').patch);
   server.get('/response',       require('./handlers/response').browse);
