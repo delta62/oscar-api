@@ -1,13 +1,13 @@
 const { responseValidatorFactory } = require('../validators/response');
 
-exports.browse = function responseBrowseHandler(req, res, next) {
+exports.responseBrowseHandler = function responseBrowseHandler(req, res, next) {
   this.models.Response.find({ username: req.user.username })
     .then(res.json.bind(res))
     .then(next)
     .catch(next);
 };
 
-exports.put = function responsePutHandler(req, res, next) {
+exports.responsePutHandler = function responsePutHandler(req, res, next) {
   let Category = this.models.Category;
   let Response = this.models.Response;
   responseValidatorFactory(req)

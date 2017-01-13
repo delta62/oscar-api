@@ -19,7 +19,6 @@ exports.onBadRequest = function onBadRequest(req, res, err, cb) {
 };
 
 exports.onAfterFactory = function onAfterFactory(server) {
-  console.log(this);
   return function onAfter(req, res, route, err) {
     let log = {
       status: res.statusCode,

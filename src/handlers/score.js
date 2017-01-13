@@ -1,6 +1,6 @@
 const { scoreCalculator } = require('../services/score');
 
-exports.get = function scoreGetHandler(req, res, next) {
+exports.scoreGetHandler = function scoreGetHandler(req, res, next) {
   Promise.all([
     this.models.User.find({ }),
     this.models.Category.find({ }),

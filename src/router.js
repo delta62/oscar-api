@@ -1,0 +1,29 @@
+const { statusGetHandler } = require('./handlers/status');
+const {
+  categoryBrowseHandler,
+  categoryPatchHandler
+} = require('./handlers/category');
+const {
+  responseBrowseHandler,
+  responsePutHandler
+} = require('./handlers/response');
+const {
+  userGetHandler,
+  userPostHandler
+} = require('./handlers/user');
+const { loginHandler } = require('./handlers/login');
+const { scoreGetHandler } = require('./handlers/score');
+
+exports.initRoutes = function initRoutes(server) {
+  server.get('/status',         statusGetHandler);
+  server.get('/category',       categoryBrowseHandler);
+  server.patch('/category/:id', categoryPatchHandler);
+  server.get('/response',       responseBrowseHandler);
+  server.put('/response/:id',   responsePutHandler);
+  server.get('/user',           userGetHandler);
+  server.post('/user',          userPostHandler);
+  server.post('/login',         loginHandler);
+  server.get('/score',          scoreGetHandler);
+
+  return server;
+};
