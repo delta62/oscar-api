@@ -1,9 +1,6 @@
 const request = require('supertest');
 const { err } = require('../helpers/error');
 const { sign } = require('../helpers/auth');
-const { categoryModelFactory } = require('../../src/model/category');
-const { responseModelFactory } = require('../../src/model/response');
-const { userModelFactory } = require('../../src/model/user');
 const { expect } = require('code');
 const { boot } = require('../../src/api');
 const { describe, before, it } = require('mocha');
@@ -15,9 +12,9 @@ describe('GET /score', () => {
     let Category, Response, User;
     token = sign('user1');
     return boot()
-      .do(api => Category = categoryModelFactory(api.conn))
-      .do(api => Response = responseModelFactory(api.conn))
-      .do(api => User = userModelFactory(api.conn))
+      .do(api => Category = api.models.Category)
+      .do(api => Response = api.models.Response)
+      .do(api => User = api.models.User)
       .do(() => Category.remove({ }))
       .do(() => Category.create({ name: 'c1', options: [ 'a' ], answer: 'a' }))
       .do(() => Category.create({ name: 'c2', options: [ 'a' ], answer: 'a' }))

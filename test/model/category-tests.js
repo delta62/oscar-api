@@ -1,15 +1,14 @@
-const mongoose = require('mongoose');
-const { modelFactory } = require('../../src/model/model-factory');
-const { expect } = require('code');
-const { categorySchema } = require('../../src/model/category');
+const mongoose                 = require('mongoose');
+const { expect }               = require('code');
 const { describe, before, it } = require('mocha');
+const { categoryModelFactory } = require('../../src/model/category');
 
 describe('Category model', () => {
   let Category;
 
   before(() => {
     mongoose.Promise = Promise;
-    Category = modelFactory(mongoose, categorySchema, 'Category');
+    Category = categoryModelFactory(mongoose);
   });
 
   it('should require name', done => {

@@ -1,8 +1,8 @@
-const config = require('config');
-const jwt = require('restify-jwt');
-const restify = require('restify');
-const { uptimePlugin } = require('./uptime');
-const { reqConnFactory } = require('./middleware/conn');
+const config                  = require('config');
+const jwt                     = require('restify-jwt');
+const restify                 = require('restify');
+const { uptimePlugin }        = require('./uptime');
+const { modelCache }          = require('./middleware/model-cache');
 const { dbConnectionFactory } = require('./connection-factory');
 const {
   onMongo,
@@ -12,9 +12,7 @@ const {
 } = require('./events');
 
 exports.initConnection = function initConnection(server) {
-  return dbConnectionFactory()
-    .then(conn => server.conn = conn)
-    .then(() => server);
+  return dbConnectionFactory().then(conn => modelCache(server, conn));
 };
 
 exports.initLogging = function initLogging(server) {
@@ -39,7 +37,6 @@ exports.initHandlers = function initHandlers(server) {
 };
 
 exports.initMiddleware = function initMiddleware(server) {
-  server.use(reqConnFactory(server));
   server.use(restify.bodyParser({ mapParams: false }));
   server.use(jwt({ secret: config.get('auth.secret') }).unless({ path: [
     { url: '/user', methods: [ 'POST' ] },
@@ -51,11 +48,11 @@ exports.initMiddleware = function initMiddleware(server) {
 };
 
 exports.initEvents = function initEvents(server) {
-  server.on('after', onAfterFactory(server));
+  server.on('after',             onAfterFactory(server));
   server.on('uncaughtException', onUncaughtFactory(server));
-  server.on('Cast', onBadRequest);
-  server.on('Validation', onBadRequest);
-  server.on('Mongo', onMongo);
+  server.on('Cast',              onBadRequest);
+  server.on('Validation',        onBadRequest);
+  server.on('Mongo',             onMongo);
 
   return server;
 };
