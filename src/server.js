@@ -22,20 +22,6 @@ exports.initLogging = function initLogging(server) {
   return server;
 };
 
-exports.initHandlers = function initHandlers(server) {
-  server.get('/status',         require('./handlers/status').get(server));
-  server.get('/category',       require('./handlers/category').browse);
-  server.patch('/category/:id', require('./handlers/category').patch);
-  server.get('/response',       require('./handlers/response').browse);
-  server.put('/response/:id',   require('./handlers/response').put);
-  server.get('/user',           require('./handlers/user').get);
-  server.post('/user',          require('./handlers/user').post);
-  server.post('/login',         require('./handlers/login').post);
-  server.get('/score',          require('./handlers/score').get);
-
-  return server;
-};
-
 exports.initMiddleware = function initMiddleware(server) {
   server.use(restify.bodyParser({ mapParams: false }));
   server.use(jwt({ secret: config.get('auth.secret') }).unless({ path: [
