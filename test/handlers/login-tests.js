@@ -1,10 +1,8 @@
-const { boot } = require('../../src/api');
-const { err } = require('../helpers/error');
-const jwt = require('jsonwebtoken');
-const { expect } = require('code');
-const { modelFactory } = require('../../src/model/model-factory');
-const { userSchema } = require('../../src/model/user');
-const request = require('supertest');
+const { boot }                 = require('../../src/api');
+const { err }                  = require('../helpers/error');
+const jwt                      = require('jsonwebtoken');
+const { expect }               = require('code');
+const request                  = require('supertest');
 const { describe, before, it } = require('mocha');
 
 describe('POST /login', () => {
@@ -13,7 +11,7 @@ describe('POST /login', () => {
   before(() => {
     let User;
     return boot()
-      .do(api => User = modelFactory(api.conn, userSchema, 'User'))
+      .do(api => User = api.models.User)
       .do(() => User.remove({ }))
       .do(() => User.create({ name: 'user', username: 'user1' }))
       .do(() => User.create({ name: 'admin', username: 'admin' }))

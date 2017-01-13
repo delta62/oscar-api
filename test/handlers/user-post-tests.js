@@ -1,18 +1,14 @@
 const { boot }                 = require('../../src/api');
 const { err }                  = require('../helpers/error');
 const request                  = require('supertest');
-const { modelFactory }         = require('../../src/model/model-factory');
-const { userSchema }           = require('../../src/model/user');
 const { describe, before, it } = require('mocha');
 
 describe('POST /users', () => {
   let agent;
 
   before(() => {
-    let User;
     return boot()
-      .do(api => User = modelFactory(api.conn, userSchema, 'User'))
-      .do(() => User.remove({ }))
+      .do(api => api.models.User.remove({ }))
       .then(api => agent = request(api));
   });
 

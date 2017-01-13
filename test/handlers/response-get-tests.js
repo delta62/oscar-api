@@ -1,10 +1,8 @@
-const request = require('supertest');
-const { err } = require('../helpers/error');
-const { sign } = require('../helpers/auth');
-const { boot } = require('../../src/api');
-const { expect } = require('code');
-const { responseModelFactory } = require('../../src/model/response');
-const { categoryModelFactory } = require('../../src/model/category');
+const request                  = require('supertest');
+const { err }                  = require('../helpers/error');
+const { sign }                 = require('../helpers/auth');
+const { boot }                 = require('../../src/api');
+const { expect }               = require('code');
 const { describe, before, it } = require('mocha');
 
 describe('GET /response', () => {
@@ -14,8 +12,8 @@ describe('GET /response', () => {
     let Response, Category;
     token = sign('u');
     return boot()
-      .do(api => Response = responseModelFactory(api.conn))
-      .do(api => Category = categoryModelFactory(api.conn))
+      .do(api => Response = api.models.Response)
+      .do(api => Category = api.models.Category)
       .do(() => Category.remove({ }))
       .do(() => Category.create({ name: 'a', options: [ 'a' ] }))
       .do(() => Category.findOne().then(cat => catId = cat._id))

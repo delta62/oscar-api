@@ -1,9 +1,8 @@
-const { boot } = require('../../src/api');
-const { err } = require('../helpers/error');
-const { sign } = require('../helpers/auth');
-const { userModelFactory } = require('../../src/model/user');
-const { expect } = require('code');
-const request = require('supertest');
+const { boot }                 = require('../../src/api');
+const { err }                  = require('../helpers/error');
+const { sign }                 = require('../helpers/auth');
+const { expect }               = require('code');
+const request                  = require('supertest');
 const { describe, before, it } = require('mocha');
 
 describe('GET /user', () => {
@@ -13,7 +12,7 @@ describe('GET /user', () => {
     let User;
     token = sign('user1');
     return boot()
-      .do(api => User = userModelFactory(api.conn))
+      .do(api => User = api.models.User)
       .do(() => User.remove({ }))
       .do(() => User.create({ username: 'user1', name: 'User One' }))
       .then(api => agent = request(api));

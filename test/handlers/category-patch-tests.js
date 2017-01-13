@@ -1,8 +1,7 @@
-const request = require('supertest');
-const { categoryModelFactory } = require('../../src/model/category');
-const { err } = require('../helpers/error');
-const { sign } = require('../helpers/auth');
-const { boot } = require('../../src/api');
+const request                  = require('supertest');
+const { err }                  = require('../helpers/error');
+const { sign }                 = require('../helpers/auth');
+const { boot }                 = require('../../src/api');
 const { describe, before, it } = require('mocha');
 
 require('promise-do');
@@ -13,7 +12,7 @@ describe('PATCH /category/:id', () => {
   before(() => {
     token = sign('admin');
     return boot()
-      .do(api => Category = categoryModelFactory(api.conn))
+      .do(api => Category = api.models.Category)
       .do(() => Category.remove({ }))
       .do(() => Category.create({ name: 'c1', options: [ 'a' ] }))
       .do(() => Category.findOne({ name: 'c1' }).then(doc => id = doc.id))
