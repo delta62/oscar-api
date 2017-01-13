@@ -3,7 +3,7 @@ const { UnauthorizedError } = require('restify');
 const { loginValidator }    = require('../validators/login');
 const { signToken }         = require('../services/login');
 
-exports.post = function loginHandler(req, res, next) {
+exports.loginHandler = function loginHandler(req, res, next) {
   loginValidator(req)
     .then(model => this.models.User.findOne({ username: model.username }))
     .do(user => ensureFound(user, new UnauthorizedError()))
