@@ -1,4 +1,7 @@
 {
+  "cors": {
+    "origins": [ "http://localhost:3000" ]
+  },
   "db": {
     "host": "localhost",
     "port": 27017,

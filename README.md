@@ -29,6 +29,7 @@ The following configuration options are available:
 
 | Name            | Type     | Description                                            |
 | --------------- | -------- | ------------------------------------------------------ |
+| cors.origins    | string[] | An array of origins allowed for CORS requests          |
 | db.host         | string   | Hostname of the mongo database server                  |
 | db.port         | number   | Port of the mongo database server                      |
 | db.dp           | string   | Database name to use                                   |
