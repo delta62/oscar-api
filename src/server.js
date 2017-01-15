@@ -23,6 +23,7 @@ exports.initLogging = function initLogging(server) {
 
 exports.initMiddleware = function initMiddleware(server) {
   server.use(restify.bodyParser({ mapParams: false }));
+  server.use(restify.CORS({ origins: config.get('cors.origins') }));
   server.use(jwt({ secret: config.get('auth.secret') }).unless({ path: [
     { url: '/user', methods: [ 'POST' ] },
     '/status',
