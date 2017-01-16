@@ -9,7 +9,8 @@ const {
 } = require('./handlers/response');
 const {
   userGetHandler,
-  userPostHandler
+  userPostHandler,
+  userHeadHandler
 } = require('./handlers/user');
 const { loginHandler } = require('./handlers/login');
 const { scoreGetHandler } = require('./handlers/score');
@@ -22,6 +23,7 @@ exports.initRoutes = function initRoutes(server) {
   server.put('/response/:id',   responsePutHandler);
   server.get('/user',           userGetHandler);
   server.post('/user',          userPostHandler);
+  server.head('/user/:email',   userHeadHandler);
   server.post('/login',         loginHandler);
   server.get('/score',          scoreGetHandler);
 

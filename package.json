@@ -4,6 +4,7 @@
   "description": "API server for an Oscars trivia game",
   "scripts": {
     "start": "node index.js",
+    "debug": "nodemon index.js",
     "pretest": "eslint src test",
     "test": "cross-env NODE_ENV=test mocha test/**/*-tests.js"
   },
@@ -26,6 +27,7 @@
     "eslint": "^3.12.2",
     "eslint-plugin-import": "^2.2.0",
     "mocha": "^3.2.0",
+    "nodemon": "^1.11.0",
     "supertest": "^2.0.1"
   }
 }
