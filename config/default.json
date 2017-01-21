@@ -13,7 +13,8 @@
   },
   "score": {
     "correct": 10,
-    "incorrect": 0
+    "incorrect": 0,
+    "first": 5
   },
   "log": {
     "level": "INFO"
