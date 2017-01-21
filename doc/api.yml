@@ -196,6 +196,33 @@ paths:
           description: No/invalid auth token was provided
           schema:
             $ref: '#/definitions/Error'
+  /score/{userId}:
+    get:
+      summary: Get a user's scoring summary
+      description: |
+        This endpoint returns a more detailed account of all scoring on all
+        responses for a particular user
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        type: string
+      tags:
+      - Score
+      - User
+      responses:
+        200:
+          description: The user's scorecard
+          schema:
+            $ref: '#/definitions/UserScore'
+        401:
+          description: No/invalid auth token was provided
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: The given user ID is not a known user
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   AuthToken:
     type: object
@@ -276,6 +303,28 @@ definitions:
       username:
         type: string
         description: Machine-readable name of the user. Doubles as the user's password.
+  UserScore:
+    type: object
+    properties:
+      totalScore:
+        type: number
+        description: The total score for this user
+      responses:
+        type: object
+        properties:
+          score:
+            type: number
+            description: The user's score for this question
+          first:
+            type: number
+            description: |
+              The number of points awarded for getting the first correct answer
+          correct:
+            type: number
+            description: The number of points awarded for guessing correctly
+          incorrect:
+            type: number
+            description: The number of points awarded for guessing incorrectly
   Error:
     type: object
     properties:

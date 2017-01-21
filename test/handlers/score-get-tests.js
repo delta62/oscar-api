@@ -78,7 +78,7 @@ describe('GET /score/:id', () => {
   it('should include incorrect answer score', done => {
     agent.get(`/score/${userId}`)
       .set('Authorization', `Bearer ${token}`)
-      .expect(res => expect(res.body.responses['c1'].correct).to.equal(10))
+      .expect(res => expect(res.body.responses['c2'].incorrect).to.equal(-1))
       .end(done);
   });
 });
