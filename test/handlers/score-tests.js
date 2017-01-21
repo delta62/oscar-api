@@ -1,8 +1,8 @@
-const request = require('supertest');
-const { err } = require('../helpers/error');
-const { sign } = require('../helpers/auth');
-const { expect } = require('code');
-const { boot } = require('../../src/api');
+const request                  = require('supertest');
+const { err }                  = require('../helpers/error');
+const { sign }                 = require('../helpers/auth');
+const { expect }               = require('code');
+const { boot }                 = require('../../src/api');
 const { describe, before, it } = require('mocha');
 
 describe('GET /score', () => {
