@@ -129,7 +129,7 @@ paths:
   /login:
     post:
       summary: Log a user in
-      description: Returns an auth token given a valid username
+      description: Returns an auth token given a valid email
       tags:
       - User
       parameters:
@@ -160,7 +160,7 @@ paths:
             $ref: '#/definitions/Error'
     post:
       summary: Create a new user
-      description: Creates a new user account, where the username is used as the password
+      description: Creates a new user account, where the email is used as the password
       tags:
       - User
       parameters:
@@ -174,7 +174,7 @@ paths:
         201:
           description: The newly created user
         409:
-          description: A user with the given username already exists
+          description: A user with the given email already exists
           schema:
             $ref: '#/definitions/Error'
   /score:
@@ -264,9 +264,9 @@ definitions:
   Login:
     type: object
     properties:
-      username:
+      email:
         type: string
-        description: The username to log in as
+        description: The email to log in as
   Response:
     type: object
     properties:
@@ -300,7 +300,7 @@ definitions:
       name:
         type: string
         description: Human-readable name of the user
-      username:
+      email:
         type: string
         description: Machine-readable name of the user. Doubles as the user's password.
   UserScore:
