@@ -39,43 +39,34 @@ describe('User model', () => {
       });
   });
 
-  it('should require username', done => {
+  it('should require email', done => {
     new User({ })
       .validate()
       .catch(err => {
-        expect(err.errors.username).to.exist();
+        expect(err.errors.email).to.exist();
         done();
       });
   });
 
-  it('should not allow usernames < 3 characters', done => {
-    new User({ username: '12' })
+  it('should not allow invalid emails', done => {
+    new User({ email: '12' })
       .validate()
       .catch(err => {
-        expect(err.errors.username).to.exist();
+        expect(err.errors.email).to.exist();
         done();
       });
   });
 
-  it('should restrict username characters', done => {
-    new User({ username: '!@#$%^&*()-_=+' })
+  it('should accept a valid email', done => {
+    new User({ email: 'cheese@gouda.com' })
       .validate()
       .catch(err => {
-        expect(err.errors.username).to.exist();
-        done();
-      });
-  });
-
-  it('should accept a valid username', done => {
-    new User({ username: 'mister_cheese' })
-      .validate()
-      .catch(err => {
-        expect(err.errors.username).not.to.exist();
+        expect(err.errors.email).not.to.exist();
         done();
       });
   });
 
   it('should pass validation with valid data', () => {
-    return new User({ name: 'foo', username: 'bar' }).validate();
+    return new User({ name: 'foo', email: 'foo@bar.com' }).validate();
   });
 });

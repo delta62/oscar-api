@@ -6,7 +6,7 @@
   },
   "auth": {
     "secret": "testsecret",
-    "admins": [ "admin" ]
+    "admins": [ "admin@foo.com" ]
   },
   "score": {
     "correct": 10,

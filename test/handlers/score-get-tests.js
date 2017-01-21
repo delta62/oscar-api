@@ -9,24 +9,27 @@ describe('GET /score/:id', () => {
 
   before(() => {
     let Category, Response, User, cat1Id, cat2Id;
-    token = sign('user1');
+    token = sign('user1@foo.com');
     return boot()
       .do(api => Category = api.models.Category)
       .do(api => Response = api.models.Response)
       .do(api => User = api.models.User)
       .do(() => Category.remove({ }))
-      .do(() => Category.create({ name: 'c1', options: [ 'a' ], answer: 'a' }))
-      .do(() => Category.create({ name: 'c2', options: [ 'a' ], answer: 'b' }))
+      .do(() => Category.create([
+        { name: 'c1', options: [ 'a' ], answer: 'a' },
+        { name: 'c2', options: [ 'a' ], answer: 'b' }
+      ]))
       .do(() => Category.findOne({ name: 'c1' }).then(cat => cat1Id = cat._id))
       .do(() => Category.findOne({ name: 'c2' }).then(cat => cat2Id = cat._id))
       .do(() => Response.remove({ }))
       .do(() => Response.create([
-        { username: 'user1', category: cat1Id, value: 'a' },
-        { username: 'user1', category: cat2Id, value: 'a' }
+        { email: 'user1@foo.com', category: cat1Id, value: 'a' },
+        { email: 'user1@foo.com', category: cat2Id, value: 'a' }
       ]))
       .do(() => User.remove({ }))
-      .do(() => User.create({ name: 'User 1', username: 'user1' }))
-      .do(() => User.findOne({ username: 'user1' }).then(u => userId = u._id))
+      .do(() => User.create({ name: 'User 1', email: 'user1@foo.com' }))
+      .do(() => User.findOne({ email: 'user1@foo.com' })
+        .then(u => userId = u._id))
       .then(api => agent = request(api));
   });
 

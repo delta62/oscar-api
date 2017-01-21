@@ -10,7 +10,7 @@ describe('PUT /response/:categoryId', () => {
 
   before(() => {
     let Category;
-    token = sign('user1');
+    token = sign('user1@foo.com');
 
     return boot()
       .do(api => Response = api.models.Response)
@@ -39,7 +39,7 @@ describe('PUT /response/:categoryId', () => {
   });
 
   it('should create new responses', () => {
-    return Response.find({ username: 'user1' })
+    return Response.find({ email: 'user1@foo.com' })
       .then(docs => expect(docs.length).to.equal(1));
   });
 
@@ -64,22 +64,22 @@ describe('PUT /response/:categoryId', () => {
   });
 
   it('should set the category of the response', () => {
-    return Response.findOne({ username: 'user1' })
+    return Response.findOne({ email: 'user1@foo.com' })
       .then(doc => expect(doc.category.toString()).to.equal(catId));
   });
 
-  it('should set the username of the response', () => {
-    return Response.findOne({ username: 'user1' })
-      .then(doc => expect(doc.username).to.equal('user1'));
+  it('should set the email of the response', () => {
+    return Response.findOne({ email: 'user1@foo.com' })
+      .then(doc => expect(doc.email).to.equal('user1@foo.com'));
   });
 
   it('should set the value of the response', () => {
-    return Response.findOne({ username: 'user1' })
+    return Response.findOne({ email: 'user1@foo.com' })
       .then(doc => expect(doc.value).to.equal('a'));
   });
 
   it('should set the modification date of a new response', () => {
-    return Response.findOne({ username: 'user1' })
+    return Response.findOne({ email: 'user1@foo.com' })
       .then(doc => expect(doc.updatedAt).to.be.a.date());
   });
 
@@ -93,7 +93,7 @@ describe('PUT /response/:categoryId', () => {
   });
 
   it('should update the modification date of an existing response', () => {
-    return Response.findOne({ username: 'user1' })
+    return Response.findOne({ email: 'user1@foo.com' })
       .then(doc => expect(doc.updatedAt).to.be.greaterThan(doc.createdAt));
   });
 });

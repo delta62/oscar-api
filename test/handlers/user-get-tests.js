@@ -10,11 +10,11 @@ describe('GET /user', () => {
 
   before(() => {
     let User;
-    token = sign('user1');
+    token = sign('u@u.com');
     return boot()
       .do(api => User = api.models.User)
       .do(() => User.remove({ }))
-      .do(() => User.create({ username: 'user1', name: 'User One' }))
+      .do(() => User.create({ email: 'u@u.com', name: 'User One' }))
       .then(api => agent = request(api));
   });
 
@@ -34,12 +34,12 @@ describe('GET /user', () => {
       .end(done);
   });
 
-  it('should return the current user\'s username', done => {
+  it('should return the current user\'s email', done => {
     agent
       .get('/user')
       .set('Authorization', `Bearer ${token}`)
       .expect(200)
-      .expect(res => expect(res.body.username).to.equal('user1'))
+      .expect(res => expect(res.body.email).to.equal('u@u.com'))
       .end(done);
   });
 

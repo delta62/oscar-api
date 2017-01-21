@@ -24,7 +24,7 @@ exports.scoreGetHandler = function scoreGetHandler(req, res, next) {
     ]))
     .then(data => {
       let [ user, categories, responses ] = data;
-      return userScoreCalculator(user.username, categories, responses);
+      return userScoreCalculator(user.email, categories, responses);
     })
     .then(res.json.bind(res))
     .then(next)

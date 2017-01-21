@@ -9,7 +9,7 @@
   },
   "auth": {
     "secret": "secret",
-    "admins": [ "admin" ]
+    "admins": [ "admin@example.com" ]
   },
   "score": {
     "correct": 10,

@@ -14,13 +14,13 @@ describe('POST /users', () => {
 
   it('should return 201 on success', done => {
     agent.post('/user')
-      .send({ name: 'foo bar', username: 'bar' })
+      .send({ name: 'foo bar', email: 'u@u.com' })
       .expect(201, done);
   });
 
-  it('should return 409 when the username is already taken', done => {
+  it('should return 409 when the email is already taken', done => {
     agent.post('/user')
-      .send({ name: 'bar baz', username: 'bar' })
+      .send({ name: 'bar baz', email: 'u@u.com' })
       .expect(409)
       .expect(err('ConflictError'))
       .end(done);

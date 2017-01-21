@@ -10,7 +10,7 @@ describe('GET /response', () => {
 
   before(() => {
     let Response, Category;
-    token = sign('u');
+    token = sign('u@foo.com');
     return boot()
       .do(api => Response = api.models.Response)
       .do(api => Category = api.models.Category)
@@ -18,8 +18,10 @@ describe('GET /response', () => {
       .do(() => Category.create({ name: 'a', options: [ 'a' ] }))
       .do(() => Category.findOne().then(cat => catId = cat._id))
       .do(() => Response.remove({ }))
-      .do(() => Response.create({ username: 'u', category: catId, value: 'a' }))
-      .do(() => Response.create({ username: 'u', category: catId, value: 'b' }))
+      .do(() => Response.create([
+        { email: 'u@foo.com', category: catId, value: 'a' },
+        { email: 'u@foo.com', category: catId, value: 'b' }
+      ]))
       .then(api => agent = request(api));
   });
 

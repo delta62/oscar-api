@@ -10,7 +10,7 @@ describe('PATCH /category/:id', () => {
   let agent, token, id, Category;
 
   before(() => {
-    token = sign('admin');
+    token = sign('admin@foo.com');
     return boot()
       .do(api => Category = api.models.Category)
       .do(() => Category.remove({ }))
@@ -58,7 +58,6 @@ describe('PATCH /category/:id', () => {
   });
 
   it('should return 200 on success', done => {
-    let token = sign('admin');
     agent
       .patch(`/category/${id}`)
       .send({ answer: 'a', closed: '2013-06-07' })
