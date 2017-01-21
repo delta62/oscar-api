@@ -1,28 +1,28 @@
-const mongoose = require('mongoose');
-const  config = require('config');
-const  { modelFactory } = require('./model-factory');
+const mongoose         = require('mongoose');
+const config           = require('config');
+const { modelFactory } = require('./model-factory');
 
-exports.userSchema = new mongoose.Schema({
+let userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     trim: true,
     match: /.{3,}/
   },
-  username: {
+  email: {
     type: String,
     required: true,
     trim: true,
-    match: /^\w{3,}$/,
+    match: /^.+@.+\..+$/,
     index: true,
     unique: true
   }
 });
 
-exports.userSchema.virtual('admin').get(function getUserIsAdmin() {
-  return config.get('auth.admins').includes(this.username);
+userSchema.virtual('admin').get(function getUserIsAdmin() {
+  return config.get('auth.admins').includes(this.email);
 });
 
 exports.userModelFactory = function userModelFactory(db) {
-  return modelFactory(db, exports.userSchema, 'User');
+  return modelFactory(db, userSchema, 'User');
 };

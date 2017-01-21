@@ -4,9 +4,9 @@ exports.scoreCalculator = function calculateScores(data) {
   let [ users, categories, responses ] = data;
 
   return users.map(user => ({
-    username: user.username,
+    email: user.email,
     name: user.name,
-    score: calculateUserScore(user.username, categories, responses)
+    score: calculateUserScore(user.email, categories, responses)
   }));
 };
 
@@ -16,7 +16,7 @@ exports.userScoreCalculator = function userScoreCalculator(
   responses) {
 
   let scoredResponses = responses
-    .filter(res => res.username === userId)
+    .filter(res => res.email === userId)
     .reduce((acc, res) => {
       let cat = categories.find(cat => {
         return cat._id.toString() === res.category.toString();
@@ -38,9 +38,9 @@ exports.userScoreCalculator = function userScoreCalculator(
   };
 };
 
-function calculateUserScore(username, categories, responses) {
+function calculateUserScore(email, categories, responses) {
   return responses.reduce((acc, res) => {
-    if (res.username !== username) {
+    if (res.email !== email) {
       return acc;
     }
 
@@ -53,12 +53,12 @@ function calculateUserScore(username, categories, responses) {
   }, 0);
 }
 
-function calculateDetailedUserScore(username, category, responses) {
+function calculateDetailedUserScore(email, category, responses) {
   let userScore = { };
-  let userResponse = responses.find(res => res.username === username);
+  let userResponse = responses.find(res => res.email === email);
   let isCorrect = userResponse.value === category.answer;
   let isFirstAnswer = responses
-    .filter(res => res.username !== username)
+    .filter(res => res.email !== email)
     .every(res => res.updatedAt >= userResponse.updatedAt);
 
   if (isCorrect) {

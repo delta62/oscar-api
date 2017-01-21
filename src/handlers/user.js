@@ -1,8 +1,10 @@
 const { userPostValidator } = require('../validators/user');
+const { ensureFound }       = require('../util');
 
 exports.userGetHandler = function userGetHandler(req, res, next) {
-  this.models.User
-    .findOne({ username: req.user.username })
+  Promise.resolve()
+    .then(() => this.models.User.findOne({ email: req.user.email }))
+    .do(ensureFound)
     .then(res.json.bind(res))
     .then(next)
     .catch(next);

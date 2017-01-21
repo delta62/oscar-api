@@ -10,33 +10,35 @@ describe('GET /score', () => {
 
   before(() => {
     let Category, Response, User;
-    token = sign('user1');
+    token = sign('user1@foo.com');
     return boot()
       .do(api => Category = api.models.Category)
       .do(api => Response = api.models.Response)
       .do(api => User = api.models.User)
       .do(() => Category.remove({ }))
-      .do(() => Category.create({ name: 'c1', options: [ 'a' ], answer: 'a' }))
-      .do(() => Category.create({ name: 'c2', options: [ 'a' ], answer: 'a' }))
+      .do(() => Category.create([
+        { name: 'c1', options: [ 'a' ], answer: 'a' },
+        { name: 'c2', options: [ 'a' ], answer: 'a' }
+      ]))
       .do(() => Category.findOne({ name: 'c1' }).then(cat => cat1Id = cat._id))
       .do(() => Category.findOne({ name: 'c2' }).then(cat => cat2Id = cat._id))
       .do(() => Response.remove({ }))
       .do(() => Response.create([
-        { username: 'user1', category: cat1Id, value: 'a' },
-        { username: 'user1', category: cat2Id, value: 'a' },
-        { username: 'user2', category: cat1Id, value: 'b' },
-        { username: 'user2', category: cat2Id, value: 'b' },
-        { username: 'user3', category: cat1Id, value: 'a' },
-        { username: 'user4', category: cat1Id, value: 'b' },
-        { username: 'user5', category: cat1Id, value: 'a' },
-        { username: 'user5', category: cat2Id, value: 'b' }
+        { email: 'user1@foo.com', category: cat1Id, value: 'a' },
+        { email: 'user1@foo.com', category: cat2Id, value: 'a' },
+        { email: 'user2@foo.com', category: cat1Id, value: 'b' },
+        { email: 'user2@foo.com', category: cat2Id, value: 'b' },
+        { email: 'user3@foo.com', category: cat1Id, value: 'a' },
+        { email: 'user4@foo.com', category: cat1Id, value: 'b' },
+        { email: 'user5@foo.com', category: cat1Id, value: 'a' },
+        { email: 'user5@foo.com', category: cat2Id, value: 'b' }
       ]))
       .do(() => User.remove({ }))
-      .do(() => User.create({ name: 'User 1', username: 'user1' }))
-      .do(() => User.create({ name: 'User 2', username: 'user2' }))
-      .do(() => User.create({ name: 'User 3', username: 'user3' }))
-      .do(() => User.create({ name: 'User 4', username: 'user4' }))
-      .do(() => User.create({ name: 'User 5', username: 'user5' }))
+      .do(() => User.create({ name: 'User 1', email: 'user1@foo.com' }))
+      .do(() => User.create({ name: 'User 2', email: 'user2@foo.com' }))
+      .do(() => User.create({ name: 'User 3', email: 'user3@foo.com' }))
+      .do(() => User.create({ name: 'User 4', email: 'user4@foo.com' }))
+      .do(() => User.create({ name: 'User 5', email: 'user5@foo.com' }))
       .then(api => agent = request(api));
   });
 

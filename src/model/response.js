@@ -1,8 +1,8 @@
-const { Schema } = require('mongoose');
+const { Schema }       = require('mongoose');
 const { modelFactory } = require('./model-factory');
 
 const responseSchema = new Schema({
-  username: {
+  email: {
     type: String,
     required: true
   },
@@ -18,8 +18,6 @@ const responseSchema = new Schema({
 }, {
   timestamps: true
 });
-
-exports.responseSchema = responseSchema;
 
 exports.responseModelFactory = function responseModelFactory(db) {
   return modelFactory(db, responseSchema, 'Response');

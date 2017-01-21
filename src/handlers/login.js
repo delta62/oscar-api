@@ -5,7 +5,7 @@ const { signToken }         = require('../services/login');
 
 exports.loginHandler = function loginHandler(req, res, next) {
   loginValidator(req)
-    .then(model => this.models.User.findOne({ username: model.username }))
+    .then(model => this.models.User.findOne({ email: model.email }))
     .do(user => ensureFound(user, new UnauthorizedError()))
     .then(signToken)
     .then(token => res.json({ token }))

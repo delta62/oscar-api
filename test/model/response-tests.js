@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { expect } = require('code');
+const mongoose                 = require('mongoose');
+const { expect }               = require('code');
 const { responseModelFactory } = require('../../src/model/response');
 const { describe, before, it } = require('mocha');
 
@@ -11,10 +11,10 @@ describe('Response model', () => {
     Response = responseModelFactory(mongoose);
   });
 
-  it('should require a username', done => {
+  it('should require an email', done => {
     new Response({ }).validate()
       .catch(err => {
-        expect(err.errors.username).to.exist();
+        expect(err.errors.email).to.exist();
         done();
       });
   });
@@ -37,7 +37,7 @@ describe('Response model', () => {
 
   it('should pass validation with valid data', () => {
     return new Response({
-      username: 'user1',
+      email: 'user1@foo.com',
       category: '58644ded8eb74fa80a65979e',
       value: 'Elmo'
     }).validate();
