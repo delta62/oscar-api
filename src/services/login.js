@@ -15,7 +15,7 @@ exports.signToken = function signToken(user) {
 function createToken(user) {
   return {
     admin: user.admin,
-    username: user.username
+    email: user.email
   };
 }
 
