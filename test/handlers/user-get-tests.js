@@ -14,7 +14,10 @@ describe('GET /user', () => {
     return boot()
       .do(api => User = api.models.User)
       .do(() => User.remove({ }))
-      .do(() => User.create({ email: 'u@u.com', name: 'User One' }))
+      .do(() => User.create([
+        { email: 'u@u.com', name: 'User One' },
+        { email: 'foo@bar.com', name: 'Foo Bar' }
+      ]))
       .then(api => agent = request(api));
   });
 
@@ -34,21 +37,29 @@ describe('GET /user', () => {
       .end(done);
   });
 
-  it('should return the current user\'s email', done => {
-    agent
-      .get('/user')
+  it('should return each user', done => {
+    agent.get('/user')
       .set('Authorization', `Bearer ${token}`)
       .expect(200)
-      .expect(res => expect(res.body.email).to.equal('u@u.com'))
+      .expect(res => expect(res.body.length).to.equal(2))
       .end(done);
   });
 
-  it('should return the current user\'s display name', done => {
+  it('should return each user\'s ID', done => {
     agent
       .get('/user')
       .set('Authorization', `Bearer ${token}`)
       .expect(200)
-      .expect(res => expect(res.body.name).to.equal('User One'))
+      .expect(res => expect(res.body[0]._id).to.be.a.string())
+      .end(done);
+  });
+
+  it('should return each user\'s display name', done => {
+    agent
+      .get('/user')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect(res => expect(res.body[0].name).to.equal('User One'))
       .end(done);
   });
 });

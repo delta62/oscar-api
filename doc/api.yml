@@ -145,15 +145,17 @@ paths:
             $ref: '#/definitions/AuthToken'
   /user:
     get:
-      summary: Current user
-      description: Returns data about the currently logged in user
+      summary: Users endpoint
+      description: Returns data about all of the players
       tags:
       - User
       responses:
         200:
-          description: The current user
+          description: An array of all players
           schema:
-            $ref: '#/definitions/User'
+            type: array
+            items:
+              $ref: '#/definitions/User'
         401:
           description: No/invalid auth token was provided
           schema:
@@ -169,10 +171,10 @@ paths:
         required: true
         description: The new user to create
         schema:
-          $ref: '#/definitions/User'
+          $ref: '#/definitions/UserPost'
       responses:
         201:
-          description: The newly created user
+          description: The user was created successfully
         409:
           description: A user with the given email already exists
           schema:
@@ -184,43 +186,15 @@ paths:
         This endpoint provides a summary description of all players' current scores.
       tags:
       - Score
-      - User
       responses:
         200:
           description: The current scorecard
           schema:
             type: array
             items:
-              $ref: '#/definitions/Score'
+              $ref: '#/definitions/UserScore'
         401:
           description: No/invalid auth token was provided
-          schema:
-            $ref: '#/definitions/Error'
-  /score/{userId}:
-    get:
-      summary: Get a user's scoring summary
-      description: |
-        This endpoint returns a more detailed account of all scoring on all
-        responses for a particular user
-      parameters:
-      - name: userId
-        in: path
-        required: true
-        type: string
-      tags:
-      - Score
-      - User
-      responses:
-        200:
-          description: The user's scorecard
-          schema:
-            $ref: '#/definitions/UserScore'
-        401:
-          description: No/invalid auth token was provided
-          schema:
-            $ref: '#/definitions/Error'
-        404:
-          description: The given user ID is not a known user
           schema:
             $ref: '#/definitions/Error'
 definitions:
@@ -276,15 +250,6 @@ definitions:
       value:
         type: string
         description: The guess that the user submitted
-  Score:
-    type: object
-    properties:
-      name:
-        type: string
-        description: Display name of the user
-      score:
-        type: number
-        description: The score for the user
   Status:
     type: object
     properties:
@@ -297,15 +262,27 @@ definitions:
   User:
     type: object
     properties:
+      id:
+        type: string
+        description: Unique identifier for this user
+      name:
+        type: string
+        description: Human-readable name of the user
+  UserPost:
+    type: object
+    properties:
       name:
         type: string
         description: Human-readable name of the user
       email:
         type: string
-        description: Machine-readable name of the user. Doubles as the user's password.
+        description: Email address of the user. Doubles as their password.
   UserScore:
     type: object
     properties:
+      userId:
+        type: string
+        description: ID of the user that this score is for
       totalScore:
         type: number
         description: The total score for this user
@@ -334,3 +311,4 @@ definitions:
       message:
         type: string
         description: Reason for the error
+
