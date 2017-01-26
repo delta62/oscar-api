@@ -186,15 +186,43 @@ paths:
         This endpoint provides a summary description of all players' current scores.
       tags:
       - Score
+      - User
       responses:
         200:
           description: The current scorecard
           schema:
             type: array
             items:
-              $ref: '#/definitions/UserScore'
+              $ref: '#/definitions/Score'
         401:
           description: No/invalid auth token was provided
+          schema:
+            $ref: '#/definitions/Error'
+  /score/{userId}:
+    get:
+      summary: Get a user's scoring summary
+      description: |
+        This endpoint returns a more detailed account of all scoring on all
+        responses for a particular user
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        type: string
+      tags:
+      - Score
+      - User
+      responses:
+        200:
+          description: The user's scorecard
+          schema:
+            $ref: '#/definitions/UserScore'
+        401:
+          description: No/invalid auth token was provided
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: The given user ID is not a known user
           schema:
             $ref: '#/definitions/Error'
 definitions:
@@ -250,6 +278,15 @@ definitions:
       value:
         type: string
         description: The guess that the user submitted
+  Score:
+    type: object
+    properties:
+      userId:
+        type: string
+        description: Unique identifier of the user
+      score:
+        type: number
+        description: The score for the user
   Status:
     type: object
     properties:
@@ -262,7 +299,7 @@ definitions:
   User:
     type: object
     properties:
-      id:
+      _id:
         type: string
         description: Unique identifier for this user
       name:
