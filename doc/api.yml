@@ -145,15 +145,17 @@ paths:
             $ref: '#/definitions/AuthToken'
   /user:
     get:
-      summary: Current user
-      description: Returns data about the currently logged in user
+      summary: Users endpoint
+      description: Returns data about all of the players
       tags:
       - User
       responses:
         200:
-          description: The current user
+          description: An array of all players
           schema:
-            $ref: '#/definitions/User'
+            type: array
+            items:
+              $ref: '#/definitions/User'
         401:
           description: No/invalid auth token was provided
           schema:
@@ -169,10 +171,10 @@ paths:
         required: true
         description: The new user to create
         schema:
-          $ref: '#/definitions/User'
+          $ref: '#/definitions/UserPost'
       responses:
         201:
-          description: The newly created user
+          description: The user was created successfully
         409:
           description: A user with the given email already exists
           schema:
@@ -279,9 +281,9 @@ definitions:
   Score:
     type: object
     properties:
-      name:
+      userId:
         type: string
-        description: Display name of the user
+        description: Unique identifier of the user
       score:
         type: number
         description: The score for the user
@@ -297,15 +299,27 @@ definitions:
   User:
     type: object
     properties:
+      _id:
+        type: string
+        description: Unique identifier for this user
+      name:
+        type: string
+        description: Human-readable name of the user
+  UserPost:
+    type: object
+    properties:
       name:
         type: string
         description: Human-readable name of the user
       email:
         type: string
-        description: Machine-readable name of the user. Doubles as the user's password.
+        description: Email address of the user. Doubles as their password.
   UserScore:
     type: object
     properties:
+      userId:
+        type: string
+        description: ID of the user that this score is for
       totalScore:
         type: number
         description: The total score for this user
@@ -334,3 +348,4 @@ definitions:
       message:
         type: string
         description: Reason for the error
+

@@ -8,7 +8,7 @@ const {
   responsePutHandler
 } = require('./handlers/response');
 const {
-  userGetHandler,
+  userBrowseHandler,
   userPostHandler
 } = require('./handlers/user');
 const { loginHandler } = require('./handlers/login');
@@ -23,7 +23,7 @@ exports.initRoutes = function initRoutes(server) {
   server.patch('/category/:id', categoryPatchHandler);
   server.get('/response',       responseBrowseHandler);
   server.put('/response/:id',   responsePutHandler);
-  server.get('/user',           userGetHandler);
+  server.get('/user',           userBrowseHandler);
   server.post('/user',          userPostHandler);
   server.post('/login',         loginHandler);
   server.get('/score/:id',      scoreGetHandler);
