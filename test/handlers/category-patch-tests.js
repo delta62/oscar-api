@@ -14,7 +14,7 @@ describe('PATCH /category/:id', () => {
     return boot()
       .do(api => Category = api.models.Category)
       .do(() => Category.remove({ }))
-      .do(() => Category.create({ name: 'c1', options: [ 'a' ] }))
+      .do(() => Category.create({ name: 'c1', options: [ 'a', 'b' ] }))
       .do(() => Category.findOne({ name: 'c1' }).then(doc => id = doc.id))
       .then(api => agent = request(api));
   });
@@ -61,6 +61,22 @@ describe('PATCH /category/:id', () => {
     agent
       .patch(`/category/${id}`)
       .send({ answer: 'a', closed: '2013-06-07' })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200, done);
+  });
+
+  it('should update close date only', done => {
+    agent
+      .patch(`/category/${id}`)
+      .send({ closed: '2013-06-07' })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200, done);
+  });
+
+  it('should update answer only', done => {
+    agent
+      .patch(`/category/${id}`)
+      .send({ answer: 'b' })
       .set('Authorization', `Bearer ${token}`)
       .expect(200, done);
   });

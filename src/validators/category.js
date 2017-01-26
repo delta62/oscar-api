@@ -1,10 +1,10 @@
 const { validatorFactory } = require('./validator-factory');
-const { ForbiddenError } = require('restify');
-const Joi = require('joi');
+const { ForbiddenError }   = require('restify');
+const Joi                  = require('joi');
 
 const schema = Joi.object().keys({
-  answer: Joi.string(),
-  closed: Joi.date().iso()
+  answer: Joi.string().optional(),
+  closed: Joi.date().optional().iso()
 });
 
 exports.categoryPatchValidator = function categoryPatchValidator(req) {
