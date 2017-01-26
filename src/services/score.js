@@ -4,8 +4,7 @@ exports.scoreCalculator = function calculateScores(data) {
   let [ users, categories, responses ] = data;
 
   return users.map(user => ({
-    email: user.email,
-    name: user.name,
+    userId: user._id,
     score: calculateUserScore(user.email, categories, responses)
   }));
 };

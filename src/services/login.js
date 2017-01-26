@@ -1,8 +1,13 @@
-const jwt  = require('jsonwebtoken');
+const jwt    = require('jsonwebtoken');
 const config = require('config');
 
 exports.signToken = function signToken(user) {
-  let token = createToken(user);
+  let token = {
+    admin: user.admin,
+    email: user.email,
+    name: user.name,
+    _id: user._id
+  };
 
   return new Promise((resolve, reject) => {
     jwt.sign(token, config.get('auth.secret'), { }, (err, token) => {
@@ -11,12 +16,3 @@ exports.signToken = function signToken(user) {
     });
   });
 };
-
-function createToken(user) {
-  return {
-    admin: user.admin,
-    email: user.email
-  };
-}
-
-

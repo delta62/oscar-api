@@ -6,7 +6,7 @@ const { boot }                 = require('../../src/api');
 const { describe, before, it } = require('mocha');
 
 describe('GET /score', () => {
-  let agent, token, cat1Id, cat2Id;
+  let agent, token, catId;
 
   before(() => {
     let Category, Response, User;
@@ -16,29 +16,16 @@ describe('GET /score', () => {
       .do(api => Response = api.models.Response)
       .do(api => User = api.models.User)
       .do(() => Category.remove({ }))
-      .do(() => Category.create([
-        { name: 'c1', options: [ 'a' ], answer: 'a' },
-        { name: 'c2', options: [ 'a' ], answer: 'a' }
-      ]))
-      .do(() => Category.findOne({ name: 'c1' }).then(cat => cat1Id = cat._id))
-      .do(() => Category.findOne({ name: 'c2' }).then(cat => cat2Id = cat._id))
+      .do(() => Category.create({ name: 'c1', options: [ 'a' ], answer: 'a' }))
+      .do(() => Category.findOne({ name: 'c1' }).then(cat => catId = cat._id))
       .do(() => Response.remove({ }))
       .do(() => Response.create([
-        { email: 'user1@foo.com', category: cat1Id, value: 'a' },
-        { email: 'user1@foo.com', category: cat2Id, value: 'a' },
-        { email: 'user2@foo.com', category: cat1Id, value: 'b' },
-        { email: 'user2@foo.com', category: cat2Id, value: 'b' },
-        { email: 'user3@foo.com', category: cat1Id, value: 'a' },
-        { email: 'user4@foo.com', category: cat1Id, value: 'b' },
-        { email: 'user5@foo.com', category: cat1Id, value: 'a' },
-        { email: 'user5@foo.com', category: cat2Id, value: 'b' }
+        { email: 'user1@foo.com', category: catId, value: 'a' },
+        { email: 'user2@foo.com', category: catId, value: 'a' },
       ]))
       .do(() => User.remove({ }))
       .do(() => User.create({ name: 'User 1', email: 'user1@foo.com' }))
       .do(() => User.create({ name: 'User 2', email: 'user2@foo.com' }))
-      .do(() => User.create({ name: 'User 3', email: 'user3@foo.com' }))
-      .do(() => User.create({ name: 'User 4', email: 'user4@foo.com' }))
-      .do(() => User.create({ name: 'User 5', email: 'user5@foo.com' }))
       .then(api => agent = request(api));
   });
 
@@ -63,16 +50,16 @@ describe('GET /score', () => {
       .get('/score')
       .set('Authorization', `Bearer ${token}`)
       .expect(200)
-      .expect(res => expect(res.body.length).to.equal(5))
+      .expect(res => expect(res.body.length).to.equal(2))
       .end(done);
   });
 
-  it('should include the name of each user', done => {
+  it('should include the ID of each user', done => {
     agent
       .get('/score')
       .set('Authorization', `Bearer ${token}`)
       .expect(200)
-      .expect(res => expect(res.body[0].name).to.be.a.string())
+      .expect(res => expect(res.body[0].userId).to.be.a.string())
       .end(done);
   });
 
@@ -84,54 +71,4 @@ describe('GET /score', () => {
       .expect(res => expect(res.body[0].score).to.be.a.number())
       .end(done);
   });
-
-  it('should score a single correct choice', done => {
-    agent
-      .get('/score')
-      .set('Authorization', `Bearer ${token}`)
-      .expect(200)
-      .expect(res => expect(scoreUser('User 3', res.body)).to.equal(10))
-      .end(done);
-  });
-
-  it('should score a single incorrect choice', done => {
-    agent
-      .get('/score')
-      .set('Authorization', `Bearer ${token}`)
-      .expect(200)
-      .expect(res => expect(scoreUser('User 4', res.body)).to.equal(-1))
-      .end(done);
-  });
-
-  it('should add multiple correct choices', done => {
-    agent
-      .get('/score')
-      .set('Authorization', `Bearer ${token}`)
-      .expect(200)
-      .expect(res => expect(scoreUser('User 1', res.body)).to.equal(20))
-      .end(done);
-  });
-
-  it('should add multiple incorrect choices', done => {
-    agent
-      .get('/score')
-      .set('Authorization', `Bearer ${token}`)
-      .expect(200)
-      .expect(res => expect(scoreUser('User 2', res.body)).to.equal(-2))
-      .end(done);
-  });
-
-  it('should add correct & incorrect choices', done => {
-    agent
-      .get('/score')
-      .set('Authorization', `Bearer ${token}`)
-      .expect(200)
-      .expect(res => expect(scoreUser('User 5', res.body)).to.equal(9))
-      .end(done);
-  });
 });
-
-function scoreUser(name, res) {
-  let score = res.find(score => score.name === name);
-  return score.score;
-}
