@@ -10,7 +10,8 @@ exports.categoryBrowseHandler = function categoryBrowseHandler(req, res, next) {
 
 exports.categoryPatchHandler = function categoryPatchHandler(req, res, next) {
   categoryPatchValidator(req)
-    .then(model => this.models.Category.findByIdAndUpdate(req.params.id, model))
+    .then(model => this.models.Category.findByIdAndUpdate(
+      req.params.id, model, { new: true }))
     .do(ensureFound)
     .then(res.json.bind(res))
     .then(next)

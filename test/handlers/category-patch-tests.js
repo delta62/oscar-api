@@ -50,7 +50,7 @@ describe('PATCH /category/:id', () => {
   it('should return 404 when updating an unknown category', done => {
     agent
       .patch('/category/58640422292044a2ef71aa0c')
-      .send({ answer: 'a', closed: '2015-01-01' })
+      .send({ answer: 'a', closed: true })
       .set('Authorization', `Bearer ${token}`)
       .expect(404)
       .expect(err('NotFoundError'))
@@ -60,7 +60,7 @@ describe('PATCH /category/:id', () => {
   it('should return 200 on success', done => {
     agent
       .patch(`/category/${id}`)
-      .send({ answer: 'a', closed: '2013-06-07' })
+      .send({ answer: 'a', closed: true })
       .set('Authorization', `Bearer ${token}`)
       .expect(200, done);
   });
@@ -68,7 +68,7 @@ describe('PATCH /category/:id', () => {
   it('should update close date only', done => {
     agent
       .patch(`/category/${id}`)
-      .send({ closed: '2013-06-07' })
+      .send({ closed: true })
       .set('Authorization', `Bearer ${token}`)
       .expect(200, done);
   });

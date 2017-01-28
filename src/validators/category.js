@@ -4,7 +4,7 @@ const Joi                  = require('joi');
 
 const schema = Joi.object().keys({
   answer: Joi.string().optional(),
-  closed: Joi.date().optional().iso()
+  closed: Joi.boolean().optional()
 });
 
 exports.categoryPatchValidator = function categoryPatchValidator(req) {
@@ -12,5 +12,11 @@ exports.categoryPatchValidator = function categoryPatchValidator(req) {
     return Promise.reject(new ForbiddenError());
   }
 
-  return validatorFactory(schema, req.body);
+  return validatorFactory(schema, req.body)
+    .then(model => {
+      let ret = { };
+      ret.closed = model.closed ? new Date() : null;
+      ret.answer = model.answer ? model.answer : null;
+      return ret;
+    });
 };
