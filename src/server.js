@@ -3,6 +3,7 @@ const jwt                     = require('restify-jwt');
 const restify                 = require('restify');
 const { modelCache }          = require('./middleware/model-cache');
 const { dbConnectionFactory } = require('./connection-factory');
+const socketio = require('socket.io');
 const {
   onMongo,
   onBadRequest,
@@ -12,6 +13,18 @@ const {
 
 exports.initConnection = function initConnection(server) {
   return dbConnectionFactory().then(conn => modelCache(server, conn));
+};
+
+exports.initSockets = function initSockets(server) {
+  let io = socketio.listen(server.server);
+  server.sockets = io.sockets;
+  server.log.info('socket.io listening');
+  io.sockets.on('connection', socket => {
+    server.log.info('websocket connected');
+    socket.on('disconnect', () => server.log.info('websocket disconnected'));
+  });
+
+  return server;
 };
 
 exports.initLogging = function initLogging(server) {
