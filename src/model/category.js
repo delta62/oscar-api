@@ -21,6 +21,11 @@ const schema = new Schema({
   closed: Date
 });
 
+schema.set('toObject', { transform: (doc, ret) => {
+  delete ret.responses;
+  return ret;
+} });
+
 schema.statics.ensureValid = function ensureValid(id, option) {
   return Promise.resolve()
     .then(() => this.findById(id))

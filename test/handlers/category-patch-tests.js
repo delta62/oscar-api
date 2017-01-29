@@ -14,7 +14,7 @@ describe('PATCH /category/:id', () => {
     return boot()
       .do(api => Category = api.models.Category)
       .do(() => Category.remove({ }))
-      .do(() => Category.create({ name: 'c1', options: [ 'a' ] }))
+      .do(() => Category.create({ name: 'c1', options: [ 'a', 'b' ] }))
       .do(() => Category.findOne({ name: 'c1' }).then(doc => id = doc.id))
       .then(api => agent = request(api));
   });
@@ -50,7 +50,7 @@ describe('PATCH /category/:id', () => {
   it('should return 404 when updating an unknown category', done => {
     agent
       .patch('/category/58640422292044a2ef71aa0c')
-      .send({ answer: 'a', closed: '2015-01-01' })
+      .send({ answer: 'a', closed: true })
       .set('Authorization', `Bearer ${token}`)
       .expect(404)
       .expect(err('NotFoundError'))
@@ -60,7 +60,23 @@ describe('PATCH /category/:id', () => {
   it('should return 200 on success', done => {
     agent
       .patch(`/category/${id}`)
-      .send({ answer: 'a', closed: '2013-06-07' })
+      .send({ answer: 'a', closed: true })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200, done);
+  });
+
+  it('should update close date only', done => {
+    agent
+      .patch(`/category/${id}`)
+      .send({ closed: true })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200, done);
+  });
+
+  it('should update answer only', done => {
+    agent
+      .patch(`/category/${id}`)
+      .send({ answer: 'b' })
       .set('Authorization', `Bearer ${token}`)
       .expect(200, done);
   });
