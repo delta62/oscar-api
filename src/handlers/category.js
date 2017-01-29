@@ -10,8 +10,21 @@ exports.categoryBrowseHandler = function categoryBrowseHandler(req, res, next) {
 
 exports.categoryPatchHandler = function categoryPatchHandler(req, res, next) {
   categoryPatchValidator(req)
-    .then(model => this.models.Category.findByIdAndUpdate(
-      req.params.id, model, { new: true }))
+    .then(model => {
+      return Promise.resolve()
+        .then(() => this.models.Category.findByIdAndUpdate(req.params.id, model))
+        .do(original => {
+          if (model.closed && !original.closed) {
+            this.sockets.emit('categoryClosed', { categoryId: original._id });
+          }
+          if (!model.closed && original.closed) {
+            this.sockets.emit('categoryOpened', { categoryId: original._id });
+          }
+          if (model.answer !== original.answer) {
+            this.sockets.emit('categoryAnswered', { categoryId: original._id, answer: model.answer });
+          }
+        })
+    })
     .do(ensureFound)
     .then(res.json.bind(res))
     .then(next)
