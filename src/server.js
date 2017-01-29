@@ -16,21 +16,12 @@ exports.initConnection = function initConnection(server) {
 };
 
 exports.initSockets = function initSockets(server) {
-  let io = socketio(server);
-  console.log(io.sockets);
-  console.log('socket is listening');
-  server.socketConnections = [ ];
+  let io = socketio.listen(server.server);
+  server.sockets = io.sockets;
+  server.log.info('socket.io listening');
   io.sockets.on('connection', socket => {
-    console.log('client connected', socket);
-    server.socketConnections.push(socket);
-
-    socket.on('disconnect', () => {
-      console.log('client disconnected', socket);
-      let idx = server.socketConnections.indexOf(socket);
-      if (idx !== -1) {
-        server.socketConnections.splice(idx, 1);
-      }
-    });
+    server.log.info('websocket connected');
+    socket.on('disconnect', () => server.log.info('websocket disconnected'));
   });
 
   return server;
