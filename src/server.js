@@ -41,7 +41,8 @@ exports.initMiddleware = function initMiddleware(server) {
   server.use(jwt({ secret: config.get('auth.secret') }).unless({ path: [
     { url: '/user', methods: 'POST' },
     '/status',
-    '/login'
+    '/login',
+    '/pin'
   ]}));
 
   return server;

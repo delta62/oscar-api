@@ -4,15 +4,14 @@ const { generatePin } = require('../../src/services/pin');
 
 describe('pin service', () => {
   it('should return a string', () => {
-    expect(generatePin(4)).to.be.a.string();
+    expect(generatePin()).to.be.a.string();
   });
 
-  it('should return a string of the given length', () => {
-    const len = 3;
-    expect(generatePin(len)).to.have.length(len);
+  it('should return a string of length 6', () => {
+    expect(generatePin()).to.have.length(6);
   });
 
   it('should include only numbers and uppercase letters', () => {
-    expect(generatePin(100)).to.match(/^[A-Z0-9]+$/);
+    expect(generatePin()).to.match(/^[A-Z0-9]{6}$/);
   });
 });
