@@ -14,7 +14,7 @@ function sendMail(user, pin) {
     subject: 'Log in to the Oscars App',
     to:      user.email,
     text:    `Your login code is ${pin}`
-  })):
+  }));
 }
 
 module.exports = {
