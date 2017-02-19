@@ -11,7 +11,7 @@ function sendMail(user, pin) {
 
   return transporter.verify().then(() => transporter.sendMail({
     from:    config.get('mail.auth.user'),
-    subject: 'Log in to the Oscars App'
+    subject: 'Log in to the Oscars App',
     to:      user.email,
     text:    `Your login code is ${pin}`
   })):
