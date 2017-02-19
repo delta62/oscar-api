@@ -1,9 +1,10 @@
 const { userModelFactory }     = require('../model/user');
 const { categoryModelFactory } = require('../model/category');
 const { responseModelFactory } = require('../model/response');
+const { pinModelFactory }      = require('../model/pin');
 
 exports.modelCache = function modelCache(server, conn) {
-  let User, Category, Response;
+  let User, Category, Response, Pin;
 
   server.models = {
     get User() {
@@ -25,6 +26,13 @@ exports.modelCache = function modelCache(server, conn) {
         Response = responseModelFactory(conn);
       }
       return Response;
+    },
+
+    get Pin() {
+      if (!Pin) {
+        Pin = pinModelFactory(conn);
+      }
+      return Pin;
     }
   };
 

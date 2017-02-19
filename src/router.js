@@ -11,7 +11,10 @@ const {
   userBrowseHandler,
   userPostHandler
 } = require('./handlers/user');
-const { loginHandler } = require('./handlers/login');
+const {
+  loginHandler,
+  pinHandler
+} = require('./handlers/login');
 const {
   scoreGetHandler,
   scoreBrowseHandler
@@ -26,6 +29,7 @@ exports.initRoutes = function initRoutes(server) {
   server.get('/user',           userBrowseHandler);
   server.post('/user',          userPostHandler);
   server.post('/login',         loginHandler);
+  server.post('/pin',           pinHandler);
   server.get('/score/:id',      scoreGetHandler);
   server.get('/score',          scoreBrowseHandler);
 
