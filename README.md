@@ -2,6 +2,8 @@
 
 # Oscar API
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/delta62/oscar-api.svg)](https://greenkeeper.io/)
+
 API server for an Oscars trivia game
 
 ## Running
