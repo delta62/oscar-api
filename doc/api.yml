@@ -11,7 +11,7 @@ produces:
 paths:
   /status:
     get:
-      summary: Server status endpint
+      summary: Server status endpoint
       description: Returns metadata regarding the server's status
       responses:
         200:
@@ -128,8 +128,9 @@ paths:
             $ref: '#/definitions/Error'
   /login:
     post:
-      summary: Log a user in
-      description: Returns an auth token given a valid email
+      summary: Begin the log in process
+      description: |
+        Creates a PIN for two-factor auth and sends an email to the user
       tags:
       - User
       parameters:
@@ -138,6 +139,22 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/Login'
+      responses:
+        200:
+          description: PIN generated
+  /pin:
+    post:
+      summary: Get an auth token
+      description: |
+        Given an email and a valid PIN, returns an auth token to the user
+      tags:
+      - User
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Pin'
       responses:
         200:
           description: Get an auth token
@@ -269,6 +286,15 @@ definitions:
       email:
         type: string
         description: The email to log in as
+  Pin:
+    type: object
+    properties:
+      email:
+        type: string
+        description: The email address to log in as
+      pin:
+        type: string
+        description: The PIN to use when logging in
   Response:
     type: object
     properties:
