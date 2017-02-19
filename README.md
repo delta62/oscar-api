@@ -40,6 +40,7 @@ The following configuration options are available:
 | score.correct   | number   | The number of points awarded for a corect answer       |
 | score.incorrect | number   | The number of points awarded for an incorrect answer   |
 | log.level       | string   | How noisy the logs should be                           |
+| mail            | object   | A NodeMailer SMTP transport configuration object       |
 
 ## API Documentation
 
