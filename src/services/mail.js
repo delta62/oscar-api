@@ -28,11 +28,8 @@ function sendMail(user, pin) {
 
   transporter.verify(err => {
     if (err) {
-      console.error('Error while verifying gmail connection');
       console.error(err);
     } else {
-      console.log('Server is ready to send email');
-
       let data = {
         to: user.email,
         text: `Your PIN number is ${pin}.`
@@ -42,8 +39,6 @@ function sendMail(user, pin) {
         if (err) {
           console.error('Error sending mail');
           console.error(err);
-        } else {
-          console.log('sent the mail');
         }
       });
     }

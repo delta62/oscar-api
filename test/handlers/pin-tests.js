@@ -17,20 +17,20 @@ describe('POST /pin', () => {
       .do(() => Pin.remove({ }))
       .do(() => User.create({ name: 'user', email: 'user1@foo.com' }))
       .do(() => User.create({ name: 'admin', email: 'admin@foo.com' }))
-      .do(() => Pin.create({ username: 'user1@foo.com', pin: '123456' }))
-      .do(() => Pin.create({ username: 'admin@foo.com', pin: '1A2B3C' }))
+      .do(() => Pin.create({ email: 'user1@foo.com', pin: '123456' }))
+      .do(() => Pin.create({ email: 'admin@foo.com', pin: '1A2B3C' }))
       .then(api => agent = request(api));
   });
 
   it('should return 200 when given a valid pin', done => {
     agent.post('/pin')
-      .send({ username: 'user1@foo.com', pin: '123456' })
+      .send({ email: 'user1@foo.com', pin: '123456' })
       .expect(200, done);
   });
 
   it('should respond with JSON', done => {
     agent.post('/pin')
-      .send({ username: 'user1@foo.com', pin: '123456' })
+      .send({ email: 'user1@foo.com', pin: '123456' })
       .expect(200)
       .expect('Content-Type', 'application/json')
       .end(done);
@@ -38,7 +38,7 @@ describe('POST /pin', () => {
 
   it('should respond with an auth token', done => {
     agent.post('/pin')
-      .send({ username: 'user1@foo.com', pin: '123456' })
+      .send({ email: 'user1@foo.com', pin: '123456' })
       .expect(200)
       .expect(res => expect(res.body.token).to.be.a.string())
       .end(done);
@@ -52,14 +52,14 @@ describe('POST /pin', () => {
 
   it('should return 401 when given an invalid pin', done => {
     agent.post('/pin')
-      .send({ username: 'user1@foo.com', pin: 'ABCDEF' })
+      .send({ email: 'user1@foo.com', pin: 'ABCDEF' })
       .expect(401)
       .end(done);
   });
 
   it('should not log non-admin users in as admins', done => {
     agent.post('/pin')
-      .send({ username: 'user1@foo.com', pin: '123456' })
+      .send({ email: 'user1@foo.com', pin: '123456' })
       .expect(200)
       .expect(res => expect(jwt.decode(res.body.token).admin).to.be.false())
       .end(done);
@@ -67,7 +67,7 @@ describe('POST /pin', () => {
 
   it('should log admin users in as admins', done => {
     agent.post('/pin')
-      .send({ username: 'admin@foo.com', pin: '1A2B3C' })
+      .send({ email: 'admin@foo.com', pin: '1A2B3C' })
       .expect(200)
       .expect(res => expect(jwt.decode(res.body.token).admin).to.be.true())
       .end(done);

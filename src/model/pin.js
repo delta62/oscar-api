@@ -2,7 +2,7 @@ const { Schema }       = require('mongoose');
 const { modelFactory } = require('./model-factory');
 
 const schema = new Schema({
-  username: {
+  email: {
     type: String,
     required: true
   },

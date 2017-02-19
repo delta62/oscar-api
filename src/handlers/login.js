@@ -12,8 +12,8 @@ function loginHandler(req, res, next) {
     .do(user => {
       if (user) {
         const pin = generatePin(user);
-        let doc = { username: user.email, pin };
-        this.models.Pin.remove({ username: user.email })
+        let doc = { email: user.email, pin };
+        this.models.Pin.remove({ email: user.email })
           .then(() => this.models.Pin.create(doc))
           .then(() => sendMail(user, pin));
       }
@@ -28,9 +28,9 @@ function pinHandler(req, res, next) {
 
   pinPostValidator(req)
     .then(model => {
-      email = model.username;
+      email = model.email;
       let query = {
-        username: model.username,
+        email: model.email,
         pin: model.pin,
         expires: { $gte: Date.now() }
       };
