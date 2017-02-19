@@ -13,7 +13,7 @@ function loginHandler(req, res, next) {
       if (user) {
         const pin = generatePin(user);
         let doc = { email: user.email, pin };
-        this.models.Pin.remove({ email: user.email })
+        return this.models.Pin.remove({ email: user.email })
           .then(() => this.models.Pin.create(doc))
           .then(() => sendMail(user, pin));
       }

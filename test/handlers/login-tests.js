@@ -10,13 +10,13 @@ describe('POST /login', () => {
     return boot()
       .do(api => User = api.models.User)
       .do(() => User.remove({ }))
-      .do(() => User.create({ name: 'user', email: 'user1@foo.com' }))
+      .do(() => User.create({ name: 'user', email: 'sam@samnoedel.com' }))
       .then(api => agent = request(api));
   });
 
   it('should return 200 with a known user', done => {
     agent.post('/login')
-      .send({ email: 'user1@foo.com' })
+      .send({ email: 'sam@samnoedel.com' })
       .expect(200, done);
   });
 

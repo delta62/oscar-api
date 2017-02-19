@@ -2,47 +2,19 @@ const { createTransport } = require('nodemailer');
 const config = require('config');
 
 function sendMail(user, pin) {
-  console.log(`Sending PIN mail to ${user.email} with PIN ${pin}`);
-
-  if (!config.has('mail.from') || !config.get('mail.from')) {
+  if (!config.has('mail.host')) {
     console.log('No mail service configured; not sending anything');
     return;
   }
 
-  let defaults = {
-    from: config.get('mail.from'),
-    subject: 'Your login PIN'
-  };
+  let transporter = createTransport(config.get('mail'));
 
-  let transport = {
-    host: config.get('mail.host'),
-    port: config.get('mail.port'),
-    secure: config.get('mail.secure'),
-    auth: {
-      user: config.get('mail.from'),
-      password: config.get('mail.pass')
-    }
-  };
-
-  let transporter = createTransport(transport, defaults);
-
-  transporter.verify(err => {
-    if (err) {
-      console.error(err);
-    } else {
-      let data = {
-        to: user.email,
-        text: `Your PIN number is ${pin}.`
-      };
-
-      transporter.sendMail(data, err => {
-        if (err) {
-          console.error('Error sending mail');
-          console.error(err);
-        }
-      });
-    }
-  });
+  return transporter.verify().then(() => transporter.sendMail({
+    from:    config.get('mail.auth.user'),
+    subject: 'Log in to the Oscars App'
+    to:      user.email,
+    text:    `Your login code is ${pin}`
+  })):
 }
 
 module.exports = {
