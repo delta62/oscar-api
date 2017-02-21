@@ -63,12 +63,21 @@ describe('GET /score', () => {
       .end(done);
   });
 
-  it('should include the score for each user', done => {
+  it('should include the total score for each user', done => {
     agent
       .get('/score')
       .set('Authorization', `Bearer ${token}`)
       .expect(200)
-      .expect(res => expect(res.body[0].score).to.be.a.number())
+      .expect(res => expect(res.body[0].score.totalScore).to.be.a.number())
+      .end(done);
+  });
+
+  it('should include a detailed breakdown of each response', done => {
+    agent
+      .get('/score')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect(res => expect(res.body[0].score.responses).to.be.an.object())
       .end(done);
   });
 });

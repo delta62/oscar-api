@@ -1,19 +1,15 @@
 const config = require('config');
 
-exports.scoreCalculator = function calculateScores(data) {
+function scoreCalculator(data) {
   let [ users, categories, responses ] = data;
 
   return users.map(user => ({
     userId: user._id,
-    score: calculateUserScore(user.email, categories, responses)
+    score: userScoreCalculator(user.email, categories, responses)
   }));
-};
+}
 
-exports.userScoreCalculator = function userScoreCalculator(
-  userId,
-  categories,
-  responses) {
-
+function userScoreCalculator(userId, categories, responses) {
   let scoredResponses = responses
     .filter(res => res.email === userId)
     .reduce((acc, res) => {
@@ -35,21 +31,6 @@ exports.userScoreCalculator = function userScoreCalculator(
     totalScore,
     responses: scoredResponses
   };
-};
-
-function calculateUserScore(email, categories, responses) {
-  return responses.reduce((acc, res) => {
-    if (res.email !== email) {
-      return acc;
-    }
-
-    let category = categories
-      .find(cat => cat._id.toString() === res.category.toString());
-    let questionScore = res.value === category.answer
-      ? config.get('score.correct')
-      : config.get('score.incorrect');
-    return acc + questionScore;
-  }, 0);
 }
 
 function calculateDetailedUserScore(email, category, responses) {
@@ -72,3 +53,7 @@ function calculateDetailedUserScore(email, category, responses) {
     (userScore.incorrect || 0);
   return userScore;
 }
+
+module.exports = {
+  scoreCalculator: scoreCalculator,
+};
