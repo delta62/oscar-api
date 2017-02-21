@@ -16,7 +16,12 @@ describe('GET /score', () => {
       .do(api => Response = api.models.Response)
       .do(api => User = api.models.User)
       .do(() => Category.remove({ }))
-      .do(() => Category.create({ name: 'c1', options: [ 'a' ], answer: 'a' }))
+      .do(() => Category.create({
+        name: 'c1',
+        options: [ 'a' ],
+        answer: 'a',
+        closed: new Date()
+      }))
       .do(() => Category.findOne({ name: 'c1' }).then(cat => catId = cat._id))
       .do(() => Response.remove({ }))
       .do(() => Response.create([

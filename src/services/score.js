@@ -16,6 +16,11 @@ function userScoreCalculator(userId, categories, responses) {
       let cat = categories.find(cat => {
         return cat._id.toString() === res.category.toString();
       });
+
+      if (!cat.closed) {
+        return acc;
+      }
+
       let catResponses = responses.filter(res => {
         return res.category.toString() === cat._id.toString();
       });
@@ -34,11 +39,15 @@ function userScoreCalculator(userId, categories, responses) {
 }
 
 function calculateDetailedUserScore(email, category, responses) {
-  let userScore = { };
+  let userScore = {
+    closed: category.closed
+  };
+
   let userResponse = responses.find(res => res.email === email);
   let isCorrect = userResponse.value === category.answer;
   let isFirstAnswer = responses
     .filter(res => res.email !== email)
+    .filter(res => res.value === category.answer)
     .every(res => res.updatedAt >= userResponse.updatedAt);
 
   if (isCorrect) {
@@ -47,10 +56,12 @@ function calculateDetailedUserScore(email, category, responses) {
   } else {
     userScore.incorrect = config.get('score.incorrect');
   }
+
   userScore.score =
-    (userScore.correct || 0) +
-    (userScore.first || 0) +
+    (userScore.correct   || 0) +
+    (userScore.first     || 0) +
     (userScore.incorrect || 0);
+
   return userScore;
 }
 
