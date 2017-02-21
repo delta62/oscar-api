@@ -1,25 +1,26 @@
 const config = require('config');
 
-exports.scoreCalculator = function calculateScores(data) {
+function scoreCalculator(data) {
   let [ users, categories, responses ] = data;
 
   return users.map(user => ({
     userId: user._id,
-    score: calculateUserScore(user.email, categories, responses)
+    score: userScoreCalculator(user.email, categories, responses)
   }));
-};
+}
 
-exports.userScoreCalculator = function userScoreCalculator(
-  userId,
-  categories,
-  responses) {
-
+function userScoreCalculator(userId, categories, responses) {
   let scoredResponses = responses
     .filter(res => res.email === userId)
     .reduce((acc, res) => {
       let cat = categories.find(cat => {
         return cat._id.toString() === res.category.toString();
       });
+
+      if (!cat.closed) {
+        return acc;
+      }
+
       let catResponses = responses.filter(res => {
         return res.category.toString() === cat._id.toString();
       });
@@ -35,29 +36,18 @@ exports.userScoreCalculator = function userScoreCalculator(
     totalScore,
     responses: scoredResponses
   };
-};
-
-function calculateUserScore(email, categories, responses) {
-  return responses.reduce((acc, res) => {
-    if (res.email !== email) {
-      return acc;
-    }
-
-    let category = categories
-      .find(cat => cat._id.toString() === res.category.toString());
-    let questionScore = res.value === category.answer
-      ? config.get('score.correct')
-      : config.get('score.incorrect');
-    return acc + questionScore;
-  }, 0);
 }
 
 function calculateDetailedUserScore(email, category, responses) {
-  let userScore = { };
+  let userScore = {
+    closed: category.closed
+  };
+
   let userResponse = responses.find(res => res.email === email);
   let isCorrect = userResponse.value === category.answer;
   let isFirstAnswer = responses
     .filter(res => res.email !== email)
+    .filter(res => res.value === category.answer)
     .every(res => res.updatedAt >= userResponse.updatedAt);
 
   if (isCorrect) {
@@ -66,9 +56,15 @@ function calculateDetailedUserScore(email, category, responses) {
   } else {
     userScore.incorrect = config.get('score.incorrect');
   }
+
   userScore.score =
-    (userScore.correct || 0) +
-    (userScore.first || 0) +
+    (userScore.correct   || 0) +
+    (userScore.first     || 0) +
     (userScore.incorrect || 0);
+
   return userScore;
 }
+
+module.exports = {
+  scoreCalculator: scoreCalculator,
+};

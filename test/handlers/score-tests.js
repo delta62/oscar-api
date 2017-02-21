@@ -16,7 +16,12 @@ describe('GET /score', () => {
       .do(api => Response = api.models.Response)
       .do(api => User = api.models.User)
       .do(() => Category.remove({ }))
-      .do(() => Category.create({ name: 'c1', options: [ 'a' ], answer: 'a' }))
+      .do(() => Category.create({
+        name: 'c1',
+        options: [ 'a' ],
+        answer: 'a',
+        closed: new Date()
+      }))
       .do(() => Category.findOne({ name: 'c1' }).then(cat => catId = cat._id))
       .do(() => Response.remove({ }))
       .do(() => Response.create([
@@ -63,12 +68,21 @@ describe('GET /score', () => {
       .end(done);
   });
 
-  it('should include the score for each user', done => {
+  it('should include the total score for each user', done => {
     agent
       .get('/score')
       .set('Authorization', `Bearer ${token}`)
       .expect(200)
-      .expect(res => expect(res.body[0].score).to.be.a.number())
+      .expect(res => expect(res.body[0].score.totalScore).to.be.a.number())
+      .end(done);
+  });
+
+  it('should include a detailed breakdown of each response', done => {
+    agent
+      .get('/score')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect(res => expect(res.body[0].score.responses).to.be.an.object())
       .end(done);
   });
 });
