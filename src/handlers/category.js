@@ -10,26 +10,37 @@ exports.categoryBrowseHandler = function categoryBrowseHandler(req, res, next) {
 
 exports.categoryPatchHandler = function categoryPatchHandler(req, res, next) {
   categoryPatchValidator(req)
-    .then(model => {
-      let id = req.params.id;
-      return Promise.resolve()
-        .then(() => this.models.Category.findByIdAndUpdate(id, model))
+    .then(updated => {
+      let id = req.params.id, original, opts = { new: true };
+
+      return Promise.resolve(id)
+        .then(id => this.models.Category.findById(id))
         .do(ensureFound)
-        .do(original => {
-          if (model.closed && !original.closed) {
-            this.sockets.emit('categoryClosed', { categoryId: original._id });
+        .then(doc => {
+          original = doc;
+
+          let ret = { };
+          if (updated.answer) ret.answer = updated.answer;
+          if (updated.closed && !original.closed) ret.closed = new Date();
+          if (!updated.closed && original.closed) ret.closed = null;
+
+          return ret;
+        })
+        .then(model => this.models.Category.findByIdAndUpdate(id, model, opts))
+        .do(endState => {
+          if (endState.closed && !original.closed) {
+            this.sockets.emit('categoryClosed', { categoryId: id });
           }
-          if (!model.closed && original.closed) {
-            this.sockets.emit('categoryOpened', { categoryId: original._id });
+          if (!endState.closed && original.closed) {
+            this.sockets.emit('categoryOpened', { categoryId: id });
           }
-          if (model.answer !== original.answer) {
+          if (endState.answer !== original.answer) {
             this.sockets.emit('categoryAnswered', {
-              categoryId: original._id, answer: model.answer
+              categoryId: id, answer: endState.answer
             });
           }
         });
     })
-    .do(ensureFound)
     .then(res.json.bind(res))
     .then(next)
     .catch(next);
