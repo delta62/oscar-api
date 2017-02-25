@@ -17,7 +17,7 @@ function userScoreCalculator(userId, categories, responses) {
         return cat._id.toString() === res.category.toString();
       });
 
-      if (!cat.closed) {
+      if (!cat || !cat.closed) {
         return acc;
       }
 
