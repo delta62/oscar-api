@@ -2,7 +2,7 @@ const { validatorFactory } = require('./validator-factory');
 const Joi                  = require('joi');
 
 const schema = Joi.object().keys({
-  name: Joi.string().min(3).regex(/^[a-z]+ [a-z]+$/i),
+  name: Joi.string().min(3),
   email: Joi.string().email().lowercase()
 });
 
