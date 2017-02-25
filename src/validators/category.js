@@ -13,10 +13,8 @@ exports.categoryPatchValidator = function categoryPatchValidator(req) {
   }
 
   return validatorFactory(schema, req.body)
-    .then(model => {
-      let ret = { };
-      ret.closed = model.closed ? new Date() : null;
-      ret.answer = model.answer ? model.answer : null;
-      return ret;
-    });
+    .then(model => ({
+      closed: model.closed,
+      answer: model.answer || null
+    }));
 };
