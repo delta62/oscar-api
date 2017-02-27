@@ -1,6 +1,6 @@
 {
   "name": "oscar-api",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "API server for an Oscars trivia game",
   "scripts": {
     "start": "node index.js",
