@@ -21,7 +21,7 @@
     "promise-do": "^0.0.2",
     "restify": "^4.3.0",
     "restify-jwt": "^0.4.0",
-    "socket.io": "^1.7.2"
+    "socket.io": "^2.0.0"
   },
   "devDependencies": {
     "code": "^4.0.0",
