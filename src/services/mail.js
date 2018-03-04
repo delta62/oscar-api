@@ -25,8 +25,7 @@ function sendMail(user, pin, logger) {
       text:    `Your login code is ${pin}`
     }))
     .catch(err => {
-      logger.error('error sending email')
-      logger.error(err);
+      logger.error({ message: 'error sending email', err });
     });
 }
 
