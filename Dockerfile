@@ -11,7 +11,7 @@ WORKDIR /usr/local/app
 RUN npm install
 
 # Expose ports
-EXPOSE 8080
+EXPOSE 80
 
 # Start application
 CMD [ "npm", "start" ]
