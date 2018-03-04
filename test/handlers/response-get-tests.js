@@ -15,7 +15,7 @@ describe('GET /response', () => {
       .do(api => Response = api.models.Response)
       .do(api => Category = api.models.Category)
       .do(() => Category.remove({ }))
-      .do(() => Category.create({ name: 'a', options: [ 'a' ] }))
+      .do(() => Category.create({ name: 'a', options: [ 'a', 'b' ] }))
       .do(() => Category.findOne().then(cat => catId = cat._id))
       .do(() => Response.remove({ }))
       .do(() => Response.create([
@@ -65,7 +65,10 @@ describe('GET /response', () => {
       .get('/response')
       .set('Authorization', `Bearer ${token}`)
       .expect(200)
-      .expect(res => expect(res.body[0].value).to.equal('a'))
+      .expect(res => {
+        const answers = res.body.map(r => r.value);
+        expect(answers).to.include([ 'a', 'b' ]);
+      })
       .end(done);
   });
 });
