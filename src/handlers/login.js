@@ -7,6 +7,8 @@ const { generatePin }       = require('../services/pin');
 const { sendMail }          = require('../services/mail');
 
 function loginHandler(req, res, next) {
+  const server = this;
+
   loginValidator(req)
     .then(model => this.models.User.findOne({ email: model.email }))
     .do(user => {
@@ -15,7 +17,7 @@ function loginHandler(req, res, next) {
         let doc = { email: user.email, pin };
         return this.models.Pin.remove({ email: user.email })
           .then(() => this.models.Pin.create(doc))
-          .then(() => sendMail(user, pin));
+          .then(() => sendMail(user, pin, server.log));
       }
     })
     .then(() => res.send(200))
