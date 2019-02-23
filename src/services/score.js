@@ -50,17 +50,22 @@ function calculateDetailedUserScore(email, category, responses) {
     .filter(res => res.value === category.answer)
     .every(res => res.updatedAt >= userResponse.updatedAt);
 
+  let showStart = config.get('score.showStart');
+  let beforeStart = userResponse.updatedAt <= showStart;
+
   if (isCorrect) {
     userScore.correct = config.get('score.correct');
     isFirstAnswer && (userScore.first = config.get('score.first'));
+    beforeStart && (userScore.beforeStart = config.get('score.beforeShow'));
   } else {
     userScore.incorrect = config.get('score.incorrect');
   }
 
   userScore.score =
-    (userScore.correct   || 0) +
-    (userScore.first     || 0) +
-    (userScore.incorrect || 0);
+    (userScore.correct     || 0) +
+    (userScore.first       || 0) +
+    (userScore.beforeStart || 0) +
+    (userScore.incorrect   || 0);
 
   return userScore;
 }
