@@ -14,7 +14,9 @@
   "score": {
     "correct": 10,
     "incorrect": 0,
-    "first": 5
+    "first": 0,
+    "beforeShow": 2,
+    "showStart": 1551056400000
   },
   "log": {
     "level": "INFO"
