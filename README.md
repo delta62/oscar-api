@@ -29,18 +29,21 @@ You can do `yarn test` to run the tests.
 Configuration is handled by [config](https://www.npmjs.com/package/config).
 The following configuration options are available:
 
-| Name            | Type     | Description                                            |
-| --------------- | -------- | ------------------------------------------------------ |
-| cors.origins    | string[] | An array of origins allowed for CORS requests          |
-| db.host         | string   | Hostname of the mongo database server                  |
-| db.port         | number   | Port of the mongo database server                      |
-| db.dp           | string   | Database name to use                                   |
-| auth.secret     | string   | The key to sign auth tokens with                       |
-| auth.admins     | string[] | An array of usernames that should be treated as admins |
-| score.correct   | number   | The number of points awarded for a corect answer       |
-| score.incorrect | number   | The number of points awarded for an incorrect answer   |
-| log.level       | string   | How noisy the logs should be                           |
-| mail            | object   | A NodeMailer SMTP transport configuration object       |
+| Name             | Type     | Description                                               |
+| ---------------- | -------- | --------------------------------------------------------- |
+| cors.origins     | string[] | An array of origins allowed for CORS requests             |
+| db.host          | string   | Hostname of the mongo database server                     |
+| db.port          | number   | Port of the mongo database server                         |
+| db.dp            | string   | Database name to use                                      |
+| auth.secret      | string   | The key to sign auth tokens with                          |
+| auth.admins      | string[] | An array of usernames that should be treated as admins    |
+| score.correct    | number   | The number of points awarded for a corect answer          |
+| score.incorrect  | number   | The number of points awarded for an incorrect answer      |
+| score.first      | number   | The number of points awarded for the first correct answer |
+| score.beforeShow | number   | The number of points awareded for correct answers submitted before the show begins |
+| score.showStart  | number   | The timestamp at which the show starts                    |
+| log.level        | string   | How noisy the logs should be                              |
+| mail             | object   | A NodeMailer SMTP transport configuration object          |
 
 ## API Documentation
 
